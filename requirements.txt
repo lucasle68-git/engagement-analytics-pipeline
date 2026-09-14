@@ -19,6 +19,9 @@ shap==0.46.0               # models.explain()
 matplotlib==3.10.0
 seaborn==0.13.2
 
+# Stakeholder app
+streamlit==1.40.2          # app/ — reads pipeline outputs, recomputes nothing
+
 # Notebooks
 jupyter==1.1.1
 nbconvert==7.16.6          # scripts/run_pipeline.py executes and exports

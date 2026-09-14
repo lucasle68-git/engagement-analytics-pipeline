@@ -48,7 +48,7 @@ analysis that failed for a specific missing data element — a consequence, not 
 | **Machine learning** | Johnson relative-weights driver analysis, imbalanced classification with temporal validation and threshold tuning, SHAP explanations, k-means segmentation held to a stated standard |
 | **Synthetic data** | Gaussian-copula generator calibrated to real aggregates, with **two blocking quality gates** — fidelity and plausibility — that fail the run rather than warn |
 | **Software practice** | `src/` package, `pytest` suite on the correctness-critical transforms, one-command reproducible pipeline, pinned dependencies, generated provenance manifest |
-| **Judgement & communication** | Every analysis preceded by a decision box (*what · why this method · what was rejected · what it feeds*); claim boundaries enforced by a function, not by discipline |
+| **Judgement & communication** | Every analysis preceded by a decision box (*what · why this method · what was rejected · what it feeds*); claim boundaries enforced by a function, not by discipline; a four-page Streamlit app translating the results for non-technical stakeholders |
 
 ## Three things worth looking at
 
@@ -85,12 +85,45 @@ make test             # 6 tests on the correctness-critical transforms
 make pipeline         # execute notebooks 01-06, export HTML, write the manifest
 ```
 
-`make all` runs the last three in order. Outputs land in `outputs/figures/`,
+`make all` runs the last two in order. Outputs land in `outputs/figures/`,
 `outputs/tables/` and `outputs/notebooks_html/`.
 
 **To read rather than run:** open `outputs/notebooks_html/` in a browser — six self-contained HTML
 files, one per notebook, no installation required. Start at `01`, then `03`, then `06` for a
 ten-minute route.
+
+**To browse the results interactively:**
+
+```bash
+streamlit run app/Home.py
+```
+
+## The stakeholder app
+
+The analysis has two audiences, and they need different artefacts. `app/` is a four-page Streamlit
+report for the second one — the people who have to act on the findings but will not open a
+notebook.
+
+<p align="center">
+  <img src="docs/app_screenshot.png" width="88%" alt="The stakeholder app, showing the DEMO provenance banner">
+</p>
+
+| Page | Question | Data |
+|---|---|---|
+| Home | Where does engagement stand? | Survey |
+| 1 · Current State | Which departments diverge, and on what? | Survey |
+| 2 · Hotspots & Risk | Which problems are company-wide, and which are local? | Survey |
+| 3 · Drivers | What actually drives engagement? | Synthetic |
+| 4 · 2026 Survey Plan | So what do we change? | Both |
+
+Two design rules shape it. **It reads, it never recomputes** — every number comes from a CSV the
+pipeline wrote, so a figure in the app cannot drift from the notebook that produced it. And every
+page opens with a provenance banner drawn from the *same* `data.provenance` switch that badges the
+figures, so the app cannot claim real client data while showing demo numbers either. The
+governance control is one function (`app/_shared.py`), not a sentence repeated on five pages.
+
+Each panel is followed by a plain-language *what this means* — including where the honest reading
+is a negative one, such as the department clustering that found no archetypes.
 
 ## The six notebooks
 
@@ -113,6 +146,7 @@ almost no logic — the analysis lives in `src/engagement/` and is called from t
 config/config.yaml    every parameter: paths, seed, thresholds, provenance
 src/engagement/       all analysis code
 notebooks/            the six notebooks; they call src/
+app/                  Streamlit stakeholder report; reads outputs/, recomputes nothing
 scripts/              run_pipeline.py · make_demo_workbook.py
 tests/                6 tests on the transforms where a silent error would spoil everything
 outputs/              figures, tables, rendered HTML, run manifest
