@@ -1,0 +1,9 @@
+category,importance,importance_naive,performance,anchor_adjusted,importance_shift,priority
+Culture & Wellbeing,0.718,0.718,3.81,False,0.0,True
+Working with the Executive Teams,0.685,0.685,3.073,False,0.0,True
+Working for AccessFintech,0.854,0.944,3.997,True,-0.09,False
+Working with my Team,0.773,0.773,4.2,False,0.0,False
+My role at Access Fintech,0.676,0.676,3.823,False,0.0,False
+Working with the Leadership Teams (Heads of Department),0.636,0.636,3.263,False,0.0,False
+Work/Life Balance,0.618,0.618,3.64,False,0.0,False
+Working with my Line Manager,0.527,0.527,3.884,False,0.0,False

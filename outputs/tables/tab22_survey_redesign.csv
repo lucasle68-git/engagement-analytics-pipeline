@@ -1,0 +1,12 @@
+decision,element,justification (traced)
+KEEP,Manager / team / leadership relationship blocks,Strong social-resource coverage; aligns with Saks (2006); Phase 1 shows these are the company's strengths (tab03)
+KEEP,eNPS / recommendation and retention items,"Comparable outcome anchors across waves (used as IPMA anchors, tab09)"
+ADD,UWES-9 engagement block (vigour / dedication / absorption),No direct outcome existed; precondition for any driver or risk model (Schaufeli & Bakker 2004; demonstrated in NB05)
+ADD,Personal-resources scale (>=4 items),"Strongest meta-analytic correlate (r=.48, Mazzetti 2021) and TOP-ranked driver in the demonstration — entirely absent from 2024"
+ADD,Technology & work-mode items + work-mode field,Distinct driver for distributed teams (Choudhary & Jain 2024); demonstrated importance in tab16
+ADD,Psychological-safety and justice scales (>=4 items each),"Block length drives reliability: 2-item blocks reached alpha .62 and 3-item blocks only .686-.747 in NB05, the measured case for >=4 items per modelled construct"
+ADD,ESG-alignment items,Emerging fintech-relevant lever (Gannon & Hieker 2022)
+ADD,"Demographics: region, tenure, role level, work mode, department size",Required for the segmentation/risk objectives; dept sizes unknown even at aggregate level in 2024 (tab10 note)
+DROP/MERGE,Redundant sentiment items within 'Working for AccessFintech',"Outcome-adjacent block (IPMA circularity, tab09); UWES replaces its measurement role:keep eNPS, merge the rest"
+FIX,Single 1-5 scale for every item,Mixed 1-5/1-10 scales corrupted the workbook's own roll-ups (tab01) and echoed into correlations (NB02)
+FIX,Anonymised ITEM-LEVEL multi-wave storage,Aggregated deltas destroyed every inferential option Phase 1 documented; storage format is the single highest-leverage fix

@@ -1,0 +1,10 @@
+construct,target_latent_r,achieved_observed_r,alpha,disattenuated_r
+personal,0.48,0.31,0.7,0.442
+development,0.45,0.326,0.82,0.429
+social,0.36,0.325,0.9,0.407
+demands,-0.3,-0.189,0.73,-0.262
+satisfaction,0.6,0.454,0.84,0.589
+justice,0.3,0.212,0.86,0.272
+technology,0.35,0.216,0.68,0.311
+psych_safety,0.35,0.228,0.63,0.344
+esg,0.25,0.175,0.61,0.266

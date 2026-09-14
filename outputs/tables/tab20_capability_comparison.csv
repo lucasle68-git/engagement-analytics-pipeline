@@ -1,0 +1,6 @@
+client question,Phase 1 (real 2024 data),Phase 2 (synthetic demonstration),missing data element -> 2026
+What drives engagement? (O2),"Prohibited: aggregated means, no outcome variable","Ranked, VIF-checked, triangulated driver table (tab16)",Individual responses + UWES outcome block
+Who is at risk? (O3),"Department-level screening only (9 items flagged, tab06)","Individual risk scores, temporally validated, explainable (tab17-18)",Individual responses + demographics
+Are the scales sound?,Untestable (no item-level data); scale-mixing defect found (tab01),Alpha per construct; short-scale weakness exposed (tab15),Item-level responses
+Are there segments? (O1/O3),"No archetypes recoverable (silhouette < 0.25, NB03)",Persona machinery with risk & demographic profiles (tab19),Demographics + department sizes
+Is engagement moving? (O1),Single 2024 snapshot,Wave trajectories (fig08),"Multi-wave collection, comparable instrument"

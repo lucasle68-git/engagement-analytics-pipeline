@@ -1,0 +1,50 @@
+code,item,category,scale,construct
+q01,AFT places great importance on the growth and development of its people.,My role at Access Fintech,5,development
+q02,"As an employee, I get sufficient and relevant information about company updates/org changes from the executive teams.",Working for AccessFintech,5,satisfaction
+q03,Collaboration between departments/teams is done well at Access Fintech.,Working with my Team,5,social
+q04,How happy are you at AccessFintech on a scale of 1 to 10?,Working for AccessFintech,10,satisfaction
+q05,I am optimistic about Access Fintech's long-term success.,Working for AccessFintech,5,satisfaction
+q06,I am recognized for my accomplishments and contributions to the company.,My role at Access Fintech,5,development
+q07,I believe I have an equal opportunity within the team to have a stable/growing career path in the organization.,My role at Access Fintech,5,development
+q08,I can see myself working for Access Fintech for the next 2 years.,Working for AccessFintech,5,satisfaction
+q09,I feel AFT is supportive of a healthy work-life balance.,Work/Life Balance,5,balance
+q10,I feel Accessfintech's culture is collaborative and empowering.,Culture & Wellbeing,5,social
+q11,I feel comfortable sharing my ideas at work with peers and management.,Culture & Wellbeing,5,social
+q12,I feel the HR team at Access Fintech care about my wellbeing.,Culture & Wellbeing,5,social
+q13,I feel the amount of work assigned to me is manageable,Work/Life Balance,5,balance
+q14,I receive regular constructive feedback from my manager.,Working with my Line Manager,5,social
+q15,I think I have been offered the support and flexibility necessary to thrive at work.,My role at Access Fintech,5,development
+q16,I think my work environment reflects the company culture.,Culture & Wellbeing,5,social
+q17,I trust the Executive team to lead the business to success.,Working with the Executive Teams,5,justice
+q18,I understand how my work contributes to the company's success.,My role at Access Fintech,5,development
+q19,I would recommend AFT to my friends.,Working for AccessFintech,5,satisfaction
+q20,Me and my team members contribute to the success of our team and the success of the company.,Working with my Team,5,social
+q21,My job gives me professional challenges and that is exciting to me.,My role at Access Fintech,5,development
+q22,My manager helps me identify the best resources to develop my skills and knowledge as a professional,Working with my Line Manager,5,social
+q23,My manager is helpful and empathetic and I feel comfortable approaching them on personal matters.,Working with my Line Manager,5,social
+q24,My manager keeps me informed about what is happening within my team and the wider business.,Working with my Line Manager,5,social
+q25,My team cooperates and helps each other.,Working with my Team,5,social
+q26,My work is appreciated by my Head of Department.,Working with the Leadership Teams (Heads of Department),5,justice
+q27,My work is appreciated by my direct manager.,Working with my Line Manager,5,social
+q28,"On a scale of one to ten, how well are you able to balance your work and personal commitments?",Work/Life Balance,10,balance
+q29,"The HR team are attentive, involved and helpful, I feel like I have someone to turn to.",Culture & Wellbeing,5,social
+q30,The Leadership team openly and transparently updates employees on decisions and changes in the company.,Working with the Leadership Teams (Heads of Department),5,justice
+q31,The day-to-day decisions here demonstrate that we continuously learn from experiences and aim for improvement.,Working for AccessFintech,5,satisfaction
+q32,The executive team contributes to a positive work culture.,Working with the Executive Teams,5,justice
+q33,The executive team works as a cohesive team.,Working with the Executive Teams,5,justice
+q34,The leadership team values all employees and treats them equally with fairness and respect.,Working with the Leadership Teams (Heads of Department),5,justice
+uwes_1,[NEW] engagement item 1,NEW: engagement,5,engagement
+uwes_2,[NEW] engagement item 2,NEW: engagement,5,engagement
+uwes_3,[NEW] engagement item 3,NEW: engagement,5,engagement
+pers_1,[NEW] personal item 1,NEW: personal,5,personal
+pers_2,[NEW] personal item 2,NEW: personal,5,personal
+pers_3,[NEW] personal item 3,NEW: personal,5,personal
+tech_1,[NEW] technology item 1,NEW: technology,5,technology
+tech_2,[NEW] technology item 2,NEW: technology,5,technology
+tech_3,[NEW] technology item 3,NEW: technology,5,technology
+just_1,[NEW] justice item 1,NEW: justice,5,justice
+just_2,[NEW] justice item 2,NEW: justice,5,justice
+psys_1,[NEW] psych_safety item 1,NEW: psych_safety,5,psych_safety
+psys_2,[NEW] psych_safety item 2,NEW: psych_safety,5,psych_safety
+esg_1,[NEW] esg item 1,NEW: esg,5,esg
+esg_2,[NEW] esg item 2,NEW: esg,5,esg

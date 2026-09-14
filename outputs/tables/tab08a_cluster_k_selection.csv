@@ -1,0 +1,6 @@
+k,silhouette_level,smallest_cluster_level,n_singletons_level,silhouette_shape,smallest_cluster_shape,n_singletons_shape
+2,0.2,8,0,0.101,4,0
+3,0.162,1,1,0.07,4,0
+4,0.139,1,2,0.069,1,1
+5,0.107,1,2,0.069,1,1
+6,0.095,1,2,0.075,1,1

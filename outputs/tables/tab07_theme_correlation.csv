@@ -1,0 +1,9 @@
+category,Culture & Wellbeing,My role at Access Fintech,Work/Life Balance,Working for AccessFintech,Working with my Line Manager,Working with my Team,Working with the Executive Teams,Working with the Leadership Teams (Heads of Department)
+Culture & Wellbeing,1.0,0.474,0.606,0.74,0.632,0.558,0.481,0.597
+My role at Access Fintech,0.474,1.0,0.627,0.661,0.685,0.576,0.671,0.542
+Work/Life Balance,0.606,0.627,1.0,0.649,0.55,0.725,0.534,0.506
+Working for AccessFintech,0.74,0.661,0.649,1.0,0.558,0.703,0.667,0.71
+Working with my Line Manager,0.632,0.685,0.55,0.558,1.0,0.537,0.661,0.67
+Working with my Team,0.558,0.576,0.725,0.703,0.537,1.0,0.408,0.526
+Working with the Executive Teams,0.481,0.671,0.534,0.667,0.661,0.408,1.0,0.553
+Working with the Leadership Teams (Heads of Department),0.597,0.542,0.506,0.71,0.67,0.526,0.553,1.0

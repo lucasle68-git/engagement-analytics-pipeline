@@ -1,0 +1,6 @@
+issue,detection,treatment,residual_risk
+"Departments reported as deltas, not scores",Workbook inspection (io.tidy),Reconstruct absolute = company mean + delta,Rounding in source deltas (~±0.01)
+Mixed 1-5 and 1-10 response scales,Scale audit against item wording,Linear rescale of 1-10 items onto 1-5 (config-switchable to z-score),Linear map assumes interval-scale equivalence
+Category roll-ups average across mixed scales,validate_structure: 2 category roll-up(s) average across mixed scales (headers arithmetically consistent but not comparable between themes),All category scores recomputed from harmonised items; workbook headers not trusted,"None — headers replaced, not repaired"
+Empty 'manager' column,Missing-value map (io.tidy),Documented as data-supply gap; excluded from analysis,Manager-level analysis impossible until 2026 redesign
+"Aggregated single-wave data, no demographics",Data appraisal (Section 1 of report),Phase 1 bounded to description; Phase 2 synthetic demonstration,Drivers/risk/trends unanswerable on real data — by design

@@ -1,0 +1,24 @@
+{
+  "seed": 5496,
+  "n_employees": 1000,
+  "n_waves": 3,
+  "calibration_tolerance": 0.05,
+  "target_correlations": {
+    "personal": 0.48,
+    "development": 0.45,
+    "social": 0.36,
+    "demands": -0.3,
+    "satisfaction": 0.6,
+    "justice": 0.3,
+    "technology": 0.35,
+    "psych_safety": 0.35,
+    "esg": 0.25
+  },
+  "item_loading": 0.7,
+  "within_dept_sd": 0.85,
+  "wave_drift_sd": 0.06,
+  "max_calibration_iter": 25,
+  "halo_strength": 0.5,
+  "min_engagement_alpha": 0.6,
+  "max_corr_gap": 0.1
+}

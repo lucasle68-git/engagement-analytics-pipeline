@@ -1,0 +1,35 @@
+category,item,spread,dept_min,dept_max,company_mean,quadrant,priority_2026
+Work/Life Balance,I feel AFT is supportive of a healthy work-life balance.,0.6,1.7,4.29,3.58,localised problem,True
+Working with the Leadership Teams (Heads of Department),The leadership team values all employees and treats them equally with fairness and respect.,0.582,2.24,4.32,3.38,localised problem,True
+Working with the Leadership Teams (Heads of Department),My work is appreciated by my Head of Department.,0.569,2.12,4.17,3.27,localised problem,True
+Working with the Leadership Teams (Heads of Department),The Leadership team openly and transparently updates employees on decisions and changes in the company.,0.503,2.15,4.16,3.14,localised problem,True
+Culture & Wellbeing,I feel comfortable sharing my ideas at work with peers and management.,0.491,2.35,4.3,3.6,localised problem,True
+Working with the Executive Teams,I trust the Executive team to lead the business to success.,0.404,2.28,3.67,3.05,company-wide problem,True
+Working with the Executive Teams,The executive team works as a cohesive team.,0.394,1.81,3.48,3.09,company-wide problem,True
+Work/Life Balance,I feel the amount of work assigned to me is manageable,0.381,2.31,3.98,3.43,company-wide problem,True
+Working with the Executive Teams,The executive team contributes to a positive work culture.,0.327,2.38,3.58,3.08,company-wide problem,True
+Working with my Line Manager,My manager helps me identify the best resources to develop my skills and knowledge as a professional,0.584,2.96,4.79,4.0,uneven strength,False
+Working for AccessFintech,How happy are you at AccessFintech on a scale of 1 to 10?,0.568,2.351,4.822,3.844,uneven strength,False
+Working with my Team,Collaboration between departments/teams is done well at Access Fintech.,0.564,2.6,4.92,4.2,uneven strength,False
+My role at Access Fintech,I think I have been offered the support and flexibility necessary to thrive at work.,0.509,2.71,4.56,3.92,uneven strength,False
+Working with my Team,My team cooperates and helps each other.,0.483,3.03,4.84,4.22,uniform strength,False
+Working with my Line Manager,I receive regular constructive feedback from my manager.,0.47,2.7,4.32,3.78,uniform strength,False
+Working for AccessFintech,I can see myself working for Access Fintech for the next 2 years.,0.468,2.98,4.57,3.99,uniform strength,False
+Working with my Line Manager,My manager keeps me informed about what is happening within my team and the wider business.,0.447,2.96,4.73,3.93,uniform strength,False
+Culture & Wellbeing,I feel Accessfintech's culture is collaborative and empowering.,0.44,2.68,4.62,3.94,uniform strength,False
+My role at Access Fintech,AFT places great importance on the growth and development of its people.,0.439,2.98,4.79,3.77,uniform strength,False
+Work/Life Balance,"On a scale of one to ten, how well are you able to balance your work and personal commitments?",0.432,2.773,4.516,3.911,uniform strength,False
+Culture & Wellbeing,I feel the HR team at Access Fintech care about my wellbeing.,0.425,2.99,4.63,3.99,uniform strength,False
+Culture & Wellbeing,I think my work environment reflects the company culture.,0.423,2.99,4.59,3.81,uniform strength,False
+My role at Access Fintech,I understand how my work contributes to the company's success.,0.42,2.58,4.27,3.8,uniform strength,False
+Working for AccessFintech,I would recommend AFT to my friends.,0.407,2.65,4.39,3.71,uniform strength,False
+Working for AccessFintech,The day-to-day decisions here demonstrate that we continuously learn from experiences and aim for improvement.,0.402,3.45,4.72,4.26,uniform strength,False
+Culture & Wellbeing,"The HR team are attentive, involved and helpful, I feel like I have someone to turn to.",0.399,2.56,4.09,3.71,uniform strength,False
+Working for AccessFintech,"As an employee, I get sufficient and relevant information about company updates/org changes from the executive teams.",0.399,3.14,4.74,4.07,uniform strength,False
+Working with my Line Manager,My work is appreciated by my direct manager.,0.39,3.28,4.77,3.95,uniform strength,False
+Working for AccessFintech,I am optimistic about Access Fintech's long-term success.,0.386,3.3,4.49,4.11,uniform strength,False
+My role at Access Fintech,I believe I have an equal opportunity within the team to have a stable/growing career path in the organization.,0.383,2.74,4.37,3.65,uniform strength,False
+Working with my Line Manager,My manager is helpful and empathetic and I feel comfortable approaching them on personal matters.,0.381,2.95,4.41,3.76,uniform strength,False
+Working with my Team,Me and my team members contribute to the success of our team and the success of the company.,0.374,3.07,4.62,4.18,uniform strength,False
+My role at Access Fintech,I am recognized for my accomplishments and contributions to the company.,0.37,3.25,4.75,4.05,uniform strength,False
+My role at Access Fintech,My job gives me professional challenges and that is exciting to me.,0.364,2.87,4.13,3.75,uniform strength,False
