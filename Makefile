@@ -1,0 +1,30 @@
+# PYTHON can be overridden, e.g.  make pipeline PYTHON=python3.12
+PYTHON ?= python3
+
+.PHONY: help demo-data test pipeline all clean
+
+help:
+	@echo "make demo-data  write the demo survey workbook to data/raw/ (already committed)"
+	@echo "make test       run the pytest suite (6 tests on the critical transforms)"
+	@echo "make pipeline   execute notebooks 01-06 in order + export HTML + write manifest"
+	@echo "make all        test, then pipeline"
+	@echo "make clean      delete generated outputs (figures, tables, processed data)"
+
+# --force so re-running is not blocked by the committed copy. It refuses to
+# overwrite without it, so a real client workbook placed here is never lost.
+demo-data:
+	$(PYTHON) scripts/make_demo_workbook.py --force
+
+# `python -m pytest` rather than the bare `pytest` console script: it guarantees
+# the tests run under the same interpreter the package was installed into.
+test:
+	$(PYTHON) -m pytest -v
+
+pipeline:
+	$(PYTHON) scripts/run_pipeline.py
+
+all: test pipeline
+
+clean:
+	rm -rf outputs/figures/* outputs/tables/* outputs/notebooks_html/* data/processed/*
+	touch outputs/figures/.gitkeep outputs/tables/.gitkeep data/processed/.gitkeep
