@@ -1,0 +1,27 @@
+# Versions pinned here are the ones recorded in outputs/run_manifest.json,
+# i.e. the environment that produced every figure and table in this report.
+
+# Core data handling
+pandas==2.2.3
+numpy==2.1.3
+openpyxl==3.1.5            # pandas.read_excel engine
+PyYAML==6.0.2              # config.py
+
+# Statistics
+scipy==1.15.3
+statsmodels==0.14.4        # OLS + VIF in models.py
+
+# Machine learning (Phase 2)
+scikit-learn==1.6.1
+shap==0.46.0               # models.explain()
+
+# Visualisation
+matplotlib==3.10.0
+seaborn==0.13.2
+
+# Notebooks
+jupyter==1.1.1
+nbconvert==7.16.6          # scripts/run_pipeline.py executes and exports
+
+# Testing
+pytest==8.3.4

@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "engagement"
+version = "1.0.0"
+description = "Two-phase employee-engagement analytics: diagnostic analysis, synthetic-data demonstration, and 2026 survey redesign (MGT5496P)"
+requires-python = ">=3.10"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

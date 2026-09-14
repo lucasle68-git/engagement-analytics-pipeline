@@ -1,0 +1,90 @@
+# =====================================================================
+# Single source of truth for ALL parameters.
+# Markers / the client can change assumptions here without touching code.
+# =====================================================================
+
+project:
+  seed: 5496                       # global random seed (reproducibility)
+  name: "AccessFintech Engagement Analysis"
+
+paths:
+  raw_workbook: "data/raw/engagement_survey_2024.xlsx"
+  sheet_name: "results"
+  processed_dir: "data/processed"
+  synthetic_dir: "data/synthetic"
+  figures_dir: "outputs/figures"
+  tables_dir: "outputs/tables"
+
+data:
+  # Provenance of the workbook at paths.raw_workbook: "demo" | "real".
+  # "demo"  -> the fabricated stand-in written by scripts/make_demo_workbook.py;
+  #            every Phase 1 figure is badged DEMO instead of REAL (viz.save_figure).
+  # "real"  -> the client's 2024 workbook, which is not distributed with this
+  #            repository. Set this only when that file is in place.
+  # Kept beside the path it describes so the two cannot be changed independently.
+  provenance: "demo"
+  company_col: "Company Overall (107)"
+  n_respondents: 107
+  # Items measured on a 1-10 scale (everything else is 1-5 Likert)
+  ten_point_items:
+    - "How happy are you at AccessFintech on a scale of 1 to 10?"
+    - "On a scale of one to ten, how well are you able to balance your work and personal commitments?"
+  # The 8 thematic category headers exactly as they appear in the workbook
+  categories:
+    - "Working for AccessFintech"
+    - "My role at Access Fintech"
+    - "Culture & Wellbeing"
+    - "Work/Life Balance"
+    - "Working with my Line Manager"
+    - "Working with my Team"
+    - "Working with the Leadership Teams (Heads of Department)"
+    - "Working with the Executive Teams"
+  # Outcome anchors used for the importance proxy in IPMA
+  outcome_anchors:
+    - "I would recommend AFT to my friends."
+    - "How happy are you at AccessFintech on a scale of 1 to 10?"
+
+quality:
+  # Tolerance when checking category header == mean of its items
+  structure_tolerance: 0.05
+  # How to harmonise 1-10 items with 1-5 items: "rescale_1_5" or "zscore"
+  harmonisation: "rescale_1_5"
+
+phase1:
+  dispersion_high_spread_quantile: 0.75   # spread above this quantile = "contested"
+  low_mean_quantile: 0.25                 # mean below this quantile = "weak"
+  n_clusters_range: [2, 6]                # candidate k for department clustering
+  pca_max_components: 5                   # capped well below n-1 (~19 units)
+
+synthetic:
+  n_employees: 1000
+  n_waves: 3
+  calibration_tolerance: 0.05             # max |simulated mean - real target|
+  # Literature-informed target correlations of each construct with the
+  # UWES-style engagement outcome (sources in synthetic.py docstring)
+  target_correlations:
+    personal: 0.48         # personal resources — Mazzetti et al. (2021)
+    development: 0.45      # development resources — Mazzetti et al. (2021)
+    social: 0.36           # social resources — Mazzetti et al. (2021)
+    demands: -0.30         # demands / health-impairment — Bakker & Demerouti (2017)
+    satisfaction: 0.60     # engagement <-> job satisfaction — Mazzetti et al. (2021)
+    justice: 0.30          # procedural justice -> org engagement — Saks (2006)
+    technology: 0.35       # tech/work-mode enablers — Choudhary & Jain (2024)
+    psych_safety: 0.35     # psychological safety — Edmondson (1999)
+    esg: 0.25              # values/ESG alignment — Gannon & Hieker (2022)
+  # Generator shape parameters
+  item_loading: 0.70       # item <- construct latent loading
+  within_dept_sd: 0.85     # within-department response sd (1-5 scale)
+  wave_drift_sd: 0.06      # sd of per-construct wave-to-wave drift
+  max_calibration_iter: 25 # mean-matching loop cap
+  halo_strength: 0.5       # dept general-factor strength (mimics Phase 1 halo finding)
+  # Plausibility gate (gate 2) thresholds — BLOCKING, not advisory
+  min_engagement_alpha: 0.6   # UWES block must reach acceptable reliability
+  max_corr_gap: 0.1          # max |disattenuated_r - target_r| (catches a broken copula)
+
+models:
+  test_size: 0.2
+  cv_folds: 5
+  imbalance_strategy: "class_weight"      # or "smote"
+  primary_metrics: ["recall", "pr_auc"]
+  risk_threshold_quantile: 0.20           # bottom 20% engagement = at-risk flag
