@@ -63,7 +63,7 @@ if _dv is not None:
         _pts.append(
             f"**Almost half of what matters was never asked.** The drivers missing from the "
             f"2024 survey account for **{_un:.1f}%** of the explanation. No amount of analysis "
-            f"can recover them; only a better survey can."
+            f"can recover them."
         )
     if _rk3 is not None:
         _b = _rk3.loc[_rk3["pr_auc"].idxmax()]

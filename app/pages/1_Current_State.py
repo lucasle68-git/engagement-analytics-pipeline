@@ -92,7 +92,7 @@ if _gp is not None:
         )
     _pts.append(
         "**The label tells you which fix applies.** A *broad gap* is a department-level "
-        "conversation; a *hot spot* is one specific question to chase. Different problems, "
+        "conversation; a *hot spot* is one specific question to chase. Different problems comes with "
         "different responses."
     )
     key_takeaways(*_pts)
