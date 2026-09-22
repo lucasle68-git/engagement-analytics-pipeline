@@ -21,6 +21,7 @@ seaborn==0.13.2
 
 # Stakeholder app
 streamlit==1.40.2          # app/ — reads pipeline outputs, recomputes nothing
+altair==5.4.1              # app/ charts (see also requirements-app.txt)
 
 # Notebooks
 jupyter==1.1.1
