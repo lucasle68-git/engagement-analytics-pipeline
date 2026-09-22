@@ -1,0 +1,19 @@
+# Dependencies for the Streamlit app ONLY.
+#
+# This file sits in app/ on purpose. Streamlit Community Cloud looks for a
+# dependency file in the entrypoint's directory FIRST, then the repository root,
+# and a custom filename cannot be chosen in the deploy UI. Putting it here is
+# therefore what makes the deployed app install these four packages instead of
+# the full analysis stack in ../requirements.txt.
+#
+# The app reads the CSV and PNG files the pipeline already wrote. It fits no
+# models and recomputes nothing, so it needs none of scikit-learn, shap,
+# statsmodels, scipy, jupyter or nbconvert. That is the difference between a
+# ~490 MB install that fits a free container and a ~2.3 GB one that does not.
+#
+# To run the analysis:  pip install -r requirements.txt   (from the repo root)
+# To serve the app:     pip install -r app/requirements.txt
+streamlit==1.40.2
+pandas==2.2.3
+PyYAML==6.0.2
+altair==5.4.1
