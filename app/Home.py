@@ -17,7 +17,8 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _shared import (  # noqa: E402
-    ROOT, figure, load_table, provenance, require, short_theme, survey_badge,
+    ROOT, figure, key_takeaways, load_table, provenance, require, short_theme,
+    survey_badge,
 )
 
 st.set_page_config(page_title="Employee Engagement Report", page_icon="📊", layout="wide")
@@ -28,6 +29,32 @@ st.caption(
     "MGT5496P Business Analytics Consultancy"
 )
 survey_badge()
+
+# ---------------------------------------------------------------- key takeaways
+_rk = load_table("tab03_theme_ranking")
+_gm = load_table("tab04_gap_matrix")
+_cp = load_table("tab10_composite_index")
+if _rk is not None:
+    _pts = [
+        f"**Engagement is positive, but flat.** All eight themes sit between "
+        f"**{_rk['mean'].min():.2f}** and **{_rk['mean'].max():.2f}** out of 5. Nothing is in "
+        f"crisis, and nothing stands out as the obvious place to act."
+    ]
+    if _gm is not None and _cp is not None:
+        _per = _gm.set_index(_gm.columns[0]).mean(axis=1)
+        _dep = _cp[_cp.iloc[:, 0] != "Company"]["composite_index"]
+        _pts.append(
+            f"**The real differences are between departments, not themes.** "
+            f"**{int((_per < 0).sum())} of {len(_per)}** departments score below the company "
+            f"average, and department scores run from **{_dep.min():.2f}** to "
+            f"**{_dep.max():.2f}**, a wider spread than the themes above. Page 1 shows who."
+        )
+    _pts.append(
+        "**This survey can describe, not explain.** It holds department averages only, so it "
+        "shows *where* engagement stands but never *why*. Pages 3 and 4 deal with that."
+    )
+    key_takeaways(*_pts)
+
 
 ranking = load_table("tab03_theme_ranking")
 require(ranking)

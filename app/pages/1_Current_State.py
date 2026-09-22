@@ -14,7 +14,8 @@ import pandas as pd
 import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from _shared import figure, load_table, require, short_theme, survey_badge  # noqa: E402
+from _shared import (figure, key_takeaways, load_table, require,  # noqa: E402
+                     short_theme, survey_badge)
 
 st.set_page_config(page_title="Current State", page_icon="📊", layout="wide")
 
@@ -62,6 +63,39 @@ def profile(row: pd.Series) -> tuple[str, str]:
 
 st.title("Current State Explorer")
 survey_badge()
+
+_gp = load_table("tab04_gap_matrix")
+_tg = load_table("tab05_top_gaps")
+_rk1 = load_table("tab03_theme_ranking")
+if _gp is not None:
+    _g = _gp.set_index(_gp.columns[0])
+    _hi, _lo = _g.mean(axis=1).idxmax(), _g.mean(axis=1).idxmin()
+    _pts = [
+        f"**A department tends to be strong or weak across the board.** Department "
+        f"**{_hi}** is above the company average on **{int((_g.loc[_hi] > 0).sum())} of "
+        f"{_g.shape[1]}** themes; department **{_lo}** is below on "
+        f"**{int((_g.loc[_lo] < 0).sum())} of {_g.shape[1]}**. The gap runs along "
+        f"departments, not along topics."
+    ]
+    if _tg is not None and not _tg.empty:
+        _w = _tg.loc[_tg["gap"].idxmin()]
+        _tm = ""
+        if _rk1 is not None:
+            _hit = _rk1[_rk1.iloc[:, 0] == _w["category"]]
+            if not _hit.empty:
+                _tm = (f", a theme whose company average is "
+                       f"{float(_hit['mean'].iloc[0]):.2f}")
+        _pts.append(
+            f"**Theme averages hide single questions.** The largest single gap is "
+            f"**{_w['gap']:+.2f}**, department {_w['department']} on one question inside "
+            f"*{short_theme(_w['category'])}*{_tm}. Averaging makes a gap like this disappear."
+        )
+    _pts.append(
+        "**The label tells you which fix applies.** A *broad gap* is a department-level "
+        "conversation; a *hot spot* is one specific question to chase. Different problems, "
+        "different responses."
+    )
+    key_takeaways(*_pts)
 st.markdown(
     "The company-level theme ranking is on the **Home** page. This page looks one level "
     "down: how each department compares with the company, theme by theme."

@@ -1,0 +1,20 @@
+# What GitHub should treat as this project's source.
+#
+# GitHub Linguist decides a repository's language by counting bytes. The rendered
+# notebooks in outputs/notebooks_html/ are 3.2 MB — fourteen times the size of the
+# Python package — so without this file GitHub labels the whole repository "HTML".
+# That is wrong twice over: the HTML is written by scripts/run_pipeline.py rather
+# than by hand, and the label tells a reader this is a web project.
+#
+# linguist-generated does two things: it removes these files from the language
+# statistics, and it collapses them in diffs, where a regenerated 500 KB HTML file
+# is noise rather than a change anyone should read.
+outputs/notebooks_html/*.html linguist-generated=true
+
+# The pipeline's numeric outputs are results, not source. Same reasoning: they are
+# committed so the analysis can be read without running it, not to be reviewed
+# line by line.
+outputs/tables/*.csv      linguist-generated=true
+data/processed/*.csv      linguist-generated=true
+data/synthetic/*.csv      linguist-generated=true
+outputs/run_manifest.json linguist-generated=true

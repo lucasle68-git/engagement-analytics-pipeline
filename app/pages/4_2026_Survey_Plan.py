@@ -10,7 +10,8 @@ import pandas as pd
 import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from _shared import figure, load_table, require, survey_badge, synthetic_badge  # noqa: E402
+from _shared import (figure, key_takeaways, load_table, require,  # noqa: E402
+                     survey_badge, synthetic_badge)
 
 st.set_page_config(page_title="2026 Survey Plan", page_icon="📊", layout="wide")
 
@@ -37,6 +38,31 @@ st.markdown(
     "**This page combines the two.** Performance comes from the 2024 survey. Importance comes "
     "from the demonstration on page 3."
 )
+
+_cap = load_table("tab20_capability_comparison")
+_ip4 = load_table("tab21_importance_performance")
+_rd = load_table("tab22_survey_redesign")
+if _cap is not None:
+    _pts = [
+        "**Today's survey answers none of the questions stakeholders asked.** Drivers, risk, "
+        "segments, trends, every one fails and every failure traces to a data element that "
+        "was never collected, not to the choice of method."
+    ]
+    if _ip4 is not None:
+        _un = _ip4.loc[~_ip4["measured_2024"], "importance_%"].sum()
+        _pts.append(
+            f"**Measure first, act second.** **{_un:.1f}%** of what drives engagement is "
+            f"invisible in the 2024 survey, against **{100 - _un:.1f}%** that is measured. "
+            f"The biggest win is asking the missing questions."
+        )
+    if _rd is not None:
+        _d = _rd["decision"].value_counts()
+        _pts.append(
+            "**Extend the survey, do not replace it.** The specification is "
+            + ", ".join(f"**{int(n)} {k}**" for k, n in _d.items())
+            + ". The 2024 instrument is not wrong, it is incomplete."
+        )
+    key_takeaways(*_pts)
 
 capability = load_table("tab20_capability_comparison")
 require(capability)

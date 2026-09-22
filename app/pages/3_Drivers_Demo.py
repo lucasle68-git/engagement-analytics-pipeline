@@ -13,8 +13,8 @@ import streamlit as st
 import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from _shared import (ROOT, figure, load_table, require, short_theme,  # noqa: E402
-                     synthetic_badge)
+from _shared import (ROOT, figure, key_takeaways, load_table,  # noqa: E402
+                     require, short_theme, synthetic_badge)
 
 st.set_page_config(page_title="Drivers (demonstration)", page_icon="📊", layout="wide")
 
@@ -47,6 +47,33 @@ def nice(x: str) -> str:
 
 st.title("What Drives Engagement? A Demonstration")
 synthetic_badge()
+
+_dv = load_table("tab16_driver_ranking")
+_ipr = load_table("tab21_importance_performance")
+_rk3 = load_table("tab17_risk_model_comparison")
+if _dv is not None:
+    _dv3 = _dv.rename(columns={_dv.columns[0]: "c"}).nlargest(3, "relative_weight_%")
+    _pts = [
+        f"**Three drivers carry most of it.** {', '.join(nice(c) for c in _dv3['c'])} "
+        f"together explain **{_dv3['relative_weight_%'].sum():.1f}%** of why one employee is "
+        f"more engaged than another."
+    ]
+    if _ipr is not None:
+        _un = _ipr.loc[~_ipr["measured_2024"], "importance_%"].sum()
+        _pts.append(
+            f"**Almost half of what matters was never asked.** The drivers missing from the "
+            f"2024 survey account for **{_un:.1f}%** of the explanation. No amount of analysis "
+            f"can recover them; only a better survey can."
+        )
+    if _rk3 is not None:
+        _b = _rk3.loc[_rk3["pr_auc"].idxmax()]
+        _pts.append(
+            f"**The machine runs end to end.** The best risk model reaches PR-AUC "
+            f"**{_b['pr_auc']:.2f}** and finds **{_b['recall@tuned']:.0%}** of at-risk "
+            f"employees once its threshold is tuned on invented data. That is proof the "
+            f"method works instead of finding about the company."
+        )
+    key_takeaways(*_pts)
 
 # ====================================================================== intro
 st.markdown(

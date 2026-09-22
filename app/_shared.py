@@ -71,6 +71,18 @@ def synthetic_badge() -> None:
     )
 
 
+def key_takeaways(*points: str) -> None:
+    """Render the page's headline conclusions in a box under the provenance banner.
+
+    Why this exists: a reader who opens one page should get the conclusion before the
+    evidence, not after it. Every point is built from the same tables the page displays
+    below, so the summary cannot drift away from the charts it summarises.
+    """
+    with st.container(border=True):
+        st.markdown("**Key takeaways**")
+        st.markdown("\n".join(f"- {p}" for p in points))
+
+
 def load_table(name: str) -> pd.DataFrame | None:
     """Read `outputs/tables/<name>.csv`, or None if the pipeline has not been run."""
     path = TABLES / f"{name}.csv"

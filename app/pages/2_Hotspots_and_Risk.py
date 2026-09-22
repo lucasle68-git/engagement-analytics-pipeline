@@ -12,7 +12,8 @@ import streamlit as st
 import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from _shared import ROOT, figure, load_table, require, short_theme, survey_badge  # noqa: E402
+from _shared import (ROOT, figure, key_takeaways, load_table,  # noqa: E402
+                     require, short_theme, survey_badge)
 
 st.set_page_config(page_title="Hotspots & Risk", page_icon="📊", layout="wide")
 
@@ -33,6 +34,33 @@ def q(text: str) -> str:
 
 st.title("Hotspots & Risk Areas")
 survey_badge()
+
+_dp = load_table("tab06_dispersion_screen")
+_ks = load_table("tab08a_cluster_k_selection")
+_ip = load_table("tab09_ipma")
+if _dp is not None:
+    _q = _dp["quadrant"].value_counts()
+    _pts = [
+        f"**{int(_dp['priority_2026'].sum())} of {len(_dp)} questions are flagged for "
+        f"2026.** **{int(_q.get('company-wide problem', 0))}** are company-wide, where "
+        f"everyone scores low, and **{int(_q.get('localised problem', 0))}** are localised, "
+        f"where most departments are fine and a few sit far below. Each needs a different "
+        f"response."
+    ]
+    if _ks is not None:
+        _best = max(_ks["silhouette_level"].max(), _ks["silhouette_shape"].max())
+        _pts.append(
+            f"**Departments do not fall into groups.** The best score the clustering reaches "
+            f"is **{_best:.2f}**, below the 0.25 mark that would signal real structure. There "
+            f"are no department types to manage, each one has to be read on its own."
+        )
+    if _ip is not None and "priority" in _ip.columns:
+        _names = ", ".join(short_theme(c) for c in _ip.loc[_ip["priority"], _ip.columns[0]])
+        _pts.append(
+            f"**The priority map points at {_names}** matters a lot, scores badly. But it "
+            f"rests on 19 data points, so read it as a pointer for the 2026 survey, not proof."
+        )
+    key_takeaways(*_pts)
 
 disp = load_table("tab06_dispersion_screen")
 require(disp)
