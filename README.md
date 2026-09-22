@@ -69,7 +69,7 @@ deliverable in the project back to one of them.
 | **Data engineering** | Schema validation that fails loudly on a changed file; delta→absolute reconstruction; mixed-scale harmonisation; tidy reshaping; a config-driven package with zero magic numbers in analysis code |
 | **Statistics** | Dispersion screening, hierarchical clustering with silhouette-based model selection, PCA, importance–performance analysis with a circularity correction, Cronbach's α, correction for measurement attenuation |
 | **Machine learning** | Johnson relative-weights driver analysis, imbalanced classification with temporal validation and threshold tuning, SHAP explanations, k-means segmentation held to a stated standard |
-| **Synthetic data** | Gaussian-copula generator calibrated to real aggregates, with **two blocking quality gates** — fidelity and plausibility — that fail the run rather than warn |
+| **Synthetic data** | Gaussian-copula generator calibrated to real aggregates, with **two blocking quality gates**, fidelity and plausibility that fail the run rather than warn |
 | **Software practice** | `src/` package, `pytest` suite on the correctness-critical transforms, one-command reproducible pipeline, pinned dependencies, generated provenance manifest |
 | **Judgement & communication** | Each analysis starts with a short note explaining what it does, why this method was chosen, what other options were ruled out, and what it leads to; the code itself prevents any result from claiming more than the data can show; a four-page Streamlit app explains the results in plain language for non-technical readers |
 
