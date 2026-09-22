@@ -47,11 +47,13 @@ if _rk is not None:
             f"**The real differences are between departments, not themes.** "
             f"**{int((_per < 0).sum())} of {len(_per)}** departments score below the company "
             f"average, and department scores run from **{_dep.min():.2f}** to "
-            f"**{_dep.max():.2f}**, a wider spread than the themes above. Page 1 shows who."
+            f"**{_dep.max():.2f}**, a wider spread than the themes above. Page 1 names the "
+            f"departments and shows where each one differs."
         )
     _pts.append(
         "**This survey can describe, not explain.** It holds department averages only, so it "
-        "shows *where* engagement stands but never *why*. Pages 3 and 4 deal with that."
+        "shows *where* engagement stands but never *why*. Page 3 demonstrates the answer on "
+        "better data; page 4 lists what the 2026 survey must collect to get it."
     )
     key_takeaways(*_pts)
 
