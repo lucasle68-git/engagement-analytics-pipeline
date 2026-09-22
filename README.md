@@ -158,7 +158,7 @@ The app follows two design rules:
    the numbers are REAL, DEMO or SYNTHETIC. It uses the same setting as the chart labels, so the
    app can never present demo numbers as real client data.
 
-Each panel is followed by a plain-language *what this means* — including where the honest reading
+Each panel is followed by a plain-language *what this means*, including where the honest reading
 is a negative one, such as the department clustering that found no archetypes.
 
 ## The six notebooks
@@ -168,7 +168,7 @@ is a negative one, such as the department clustering that found no archetypes.
 | 01 | `01_data_loading_quality.ipynb` | Is the data loaded correctly, and what is wrong with it? |
 | 02 | `02_phase1_diagnostic.ipynb` | Where does engagement stand, and where are the gaps? |
 | 03 | `03_phase1_multivariate.ipynb` | Do departments form groups? How many things does the survey measure? |
-| 04 | `04_synthetic_generation_validation.ipynb` | Can we build the data the survey is missing — and prove it is sound? |
+| 04 | `04_synthetic_generation_validation.ipynb` | Can we build the data the survey is missing, and prove it is sound? |
 | 05 | `05_phase2_modelling.ipynb` | What would better data unlock: drivers, risk, segments, trends? |
 | 06 | `06_phase3_synthesis.ipynb` | What must the 2026 survey collect? |
 
@@ -221,7 +221,7 @@ wrong data.
 | Validation | A renamed column or reworded heading stops the run instead of producing a wrong answer |
 | Calibration | Synthetic department means match their targets, and re-running is deterministic |
 | Correlations | The relationships imposed from the literature are the ones recovered |
-| Gates block | The quality gates fail the run — they do not merely print a warning |
+| Gates block | The quality gates fail the run. they do not merely print a warning |
 
 ## Reproducibility
 
