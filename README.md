@@ -221,7 +221,7 @@ wrong data.
 | Validation | A renamed column or reworded heading stops the run instead of producing a wrong answer |
 | Calibration | Synthetic department means match their targets, and re-running is deterministic |
 | Correlations | The relationships imposed from the literature are the ones recovered |
-| Gates block | The quality gates fail the run. they do not merely print a warning |
+| Gates block | The quality gates fail the run; they do not merely print a warning |
 
 ## Reproducibility
 
