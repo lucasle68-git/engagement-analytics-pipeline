@@ -2,7 +2,8 @@
 
 Unit of analysis: ~19 aggregated department units. All functions here are
 DESCRIPTIVE / EXPLORATORY. Inferential, predictive and psychometric modelling
-are deliberately excluded (see methodology §4.2.6) and live in Phase 2.
+are deliberately excluded — ~19 aggregated units cannot support them — and
+live in Phase 2.
 
 Pipeline position:  quality.harmonise_scales --> harmonised long df --> HERE
 
@@ -19,7 +20,7 @@ group by, and what does it compare against?
     dispersion_screen     item                     the spread across depts
     theme_correlation     department x category    the other themes
     -------------------------------------------------------------------------
-    (used by NB02 — the four above the line map to essay §3.1-§3.4)
+    (used by NB02)
 
     department_matrix / _prepare_matrix / select_k / cluster_departments /
     cluster_profiles / compare_clusterings / pca_departments / ipma /
@@ -80,9 +81,9 @@ def theme_ranking(harmonised: pd.DataFrame) -> pd.DataFrame:
     headers average 1-10 and 1-5 items together. Those headers are therefore
     never used; every theme score here is rebuilt from harmonised items.
 
-    Worked example: 'Working with my Line Manager' = mean of its 5 harmonised
-    items = 4.166, rank 1. The whole ranking spans 3.913 to 4.166, a quarter
-    of a scale point, which is the finding reported in essay §3.1.
+    What the ranking is read for is its span: when all eight themes fall inside
+    a fraction of a scale point, the ranking is a poor place to aim an
+    intervention (NB02 section 1).
     """
     company = harmonised[harmonised["department"] == "Company"]
     out = (
@@ -114,7 +115,7 @@ def gap_matrix(harmonised: pd.DataFrame) -> pd.DataFrame:
 
     Positive = above company average, negative = below, so a cell reading -1.09
     puts that department more than a full scale point below the company on that
-    theme. This matrix is essay Figure 3 (fig02).
+    theme. This matrix is saved as `fig02`.
 
     Note the deltas are NOT simply the workbook's original delta column: those
     were per item and on mixed scales. These are recomputed from harmonised
@@ -149,7 +150,7 @@ def top_gaps(harmonised: pd.DataFrame, n: int = 10) -> pd.DataFrame:
 
     Worked example (top row of tab05): department R scores 5.0 on the manager
     resources item against a company score of 3.9, a gap of +1.1, the largest
-    positive gap in the dataset. Essay §3.2, Table 3 (tab05).
+    positive gap in the dataset. Written to `tab05`; charted as `fig02` in NB02.
 
     Caveat carried into the report: with departments this small, a single
     respondent can move an item this far, so the extremes are read as leads to
@@ -206,8 +207,8 @@ def dispersion_screen(harmonised: pd.DataFrame, cfg: dict[str, Any]) -> pd.DataF
     Both cut-offs are quantiles of the survey itself rather than fixed values,
     so the screen adapts to an instrument whose overall level has shifted and
     what it flags stays a statement about THIS survey's internal spread rather
-    than about an external benchmark. Essay §3.3: Figure 4 (fig02b) and
-    Table 4 (tab06).
+    than about an external benchmark. Written to `tab06` and charted as
+    `fig02b` in NB02.
     """
     depts = harmonised[harmonised["department"] != "Company"]
     stats = depts.groupby(["category", "item"])["harmonised"].agg(
@@ -257,7 +258,7 @@ def theme_correlation(harmonised: pd.DataFrame) -> pd.DataFrame:
     together is the signature of a halo /
     common-method factor, departments that feel good about one thing feel good
     about everything, which is one of the three converging pieces of evidence
-    for that finding in the report (essay §3.4, Figure 5 / fig02c).
+    for that finding (NB02 section 4; `tab07`, `fig02c`).
 
     Caveats reported verbatim: ~19 units -> very low power, so individual
     coefficients are unstable; treated as hypothesis generation for Phase 2,
@@ -348,7 +349,7 @@ def select_k(
 
     Read the silhouette and the membership column together: a run whose score
     improves only because it has isolated one department has found an outlier,
-    not a segment (essay §3.4).
+    not a segment (NB03 section A).
     """
     _, z = _prepare_matrix(harmonised, mode)
     lnk = linkage(pdist(z, metric="euclidean"), method="ward")
@@ -442,7 +443,7 @@ def cluster_profiles(
     Why both views are printed in NB03: the pair IS the test. If the clusters
     differ only in overall favourability, the relative table is near zero
     everywhere while the level difference between them is large, and it is that
-    contrast which supports or refutes the halo reading in essay §3.4.
+    contrast which supports or refutes the halo reading in NB03.
     """
     col = assign.columns[0]
     cat = (
@@ -511,12 +512,14 @@ def pca_departments(harmonised: pd.DataFrame, cfg: dict[str, Any]) -> dict[str, 
     Boundary. p (34 items) > n (19 units), so components are unstable and the
     result is structure-revealing only: it may suggest how many dimensions exist,
     it cannot confirm a factor structure. That test needs individual-level data
-    and is deferred to Phase 2, part of the RO4 argument.
+    and is deferred to Phase 2. That gap is one of the reasons the 2026
+    survey has to change.
 
     The reading of PC1 is tested rather than asserted: it is correlated against
     the composite index built independently in `composite_index`, and a
     correlation near 1 means PC1 simply IS overall favourability. PC2 typically
-    opposes proximal items against distal ones. Essay §3.4, Figures 8-9.
+    opposes proximal items against distal ones. Charted as `fig04a` and
+    `fig04b` in NB03.
     """
     matrix, z = _prepare_matrix(harmonised, "level")
     n_comp = min(cfg["phase1"]["pca_max_components"], matrix.shape[0] - 1)
@@ -578,8 +581,8 @@ def ipma(harmonised: pd.DataFrame, cfg: dict[str, Any]) -> pd.DataFrame:
 
     What matters is not the size of the shift but whether a theme crosses a
     quadrant boundary because of it. A conclusion that survives its own
-    correction can be reported; one that does not, cannot. Essay §3.5,
-    Figure 10.
+    correction can be reported; one that does not, cannot. Written to `tab09`
+    and charted as `fig04c` in NB03.
 
     Small-n caveat (~19 departments) applies; reported as exploratory.
     """

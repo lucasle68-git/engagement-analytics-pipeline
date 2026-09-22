@@ -4,7 +4,7 @@ Modules
 -------
 config     : loads/validates config.yaml — the single source of truth
 io         : workbook loading, structural validation, tidy reshaping, exports
-quality    : delta reconstruction, scale harmonisation, structure checks (ILO1)
+quality    : delta reconstruction, scale harmonisation, structure checks
 phase1     : diagnostic analysis of the real 2024 aggregated data (RO1, RO3a)
 synthetic  : calibrated synthetic-data generator + validators (Phase 2 input)
 models     : driver analysis, risk models, evaluation, SHAP (RO2, RO3b)

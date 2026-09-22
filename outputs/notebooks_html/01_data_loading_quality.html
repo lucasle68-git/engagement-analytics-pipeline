@@ -7518,17 +7518,17 @@ a.anchor-link {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <blockquote>
-<h3 id="Public-copy-%E2%80%94-demo-data">Public copy — demo data<a class="anchor-link" href="#Public-copy-%E2%80%94-demo-data">¶</a></h3><p>The 2024 survey this project was built on belongs to the client and is not redistributable, so
-it is <strong>not in this repository</strong>. In its place, <code>data/raw/engagement_survey_2024.xlsx</code> is written
-by <code>scripts/make_demo_workbook.py</code>: the same sheet name, the same 22 columns and 42 rows, the
-same category headers, the same two 1-10 items and the same delta-from-company-mean encoding —
-and <strong>entirely invented numbers</strong>.</p>
-<p>So: the code, the method choices and the reasoning below are the originals. Every number, table
-and chart is computed from demo data, and every Phase 1 figure is badged <strong>DEMO</strong> instead of
-REAL. Where a passage describes what was actually found on the client's data it says so and
-points to the section of the accompanying report that carries the figures.</p>
-<p><code>data.provenance</code> in <code>config/config.yaml</code> is the switch: set it to <code>real</code> once the client
-workbook is in place, and the badges change back.</p>
+<h3 id="Public-copy-(demo-data)">Public copy (demo data)<a class="anchor-link" href="#Public-copy-(demo-data)">¶</a></h3><p>The client's 2024 survey cannot be shared publicly, so it is <strong>not in this repository</strong>. Instead,
+<code>scripts/make_demo_workbook.py</code> creates <code>data/raw/engagement_survey_2024.xlsx</code>, a stand-in file
+with the same structure as the real one: the same sheet name, 22 columns, 42 rows, category
+headers, two 1-10 items and the same delta-from-company-mean format. Only the numbers are
+<strong>invented</strong>.</p>
+<p>This means the code, the method and the reasoning below are the originals, but every number,
+table and chart comes from demo data. Phase 1 figures are labelled <strong>DEMO</strong> instead of REAL.
+Where a result depends on the client's numbers, the text says what to look for instead of
+quoting them. Everything the notebooks produce is written to <code>outputs/</code>.</p>
+<p>To run on the real data, put the client workbook in <code>data/raw/</code> and set <code>data.provenance</code> to
+<code>real</code> in <code>config/config.yaml</code>. The labels then switch back.</p>
 </blockquote>
 </div>
 </div>
@@ -7550,7 +7550,11 @@ workbook is in place, and the badges change back.</p>
 <tbody>
 <tr>
 <td><strong>Purpose</strong></td>
-<td>Load the 2024 workbook, verify it is understood, and produce the analysis-ready dataset (ILO1).</td>
+<td>Load the 2024 workbook, verify it is understood, and produce the analysis-ready dataset.</td>
+</tr>
+<tr>
+<td><strong>Objectives</strong></td>
+<td>Groundwork for all four. The refined objectives RO1–RO4 are defined in the README.</td>
 </tr>
 <tr>
 <td><strong>Input</strong></td>
@@ -7559,10 +7563,6 @@ workbook is in place, and the badges change back.</p>
 <tr>
 <td><strong>Outputs</strong></td>
 <td><code>data/processed/dept_item_matrix.csv</code> · <code>tab01</code> · <code>tab02</code></td>
-</tr>
-<tr>
-<td><strong>Evidence for essay</strong></td>
-<td>§2.1 Dataset overview · §2.2 (<strong>Figure 1</strong>) · <strong>Appendix B1</strong> = <code>tab02</code> · <strong>Appendix B2</strong> = <code>tab01</code> · boundary feeds §3.6</td>
 </tr>
 </tbody>
 </table>
@@ -7618,7 +7618,7 @@ empty. This shape bounds everything Phase 1 may claim.</p>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <hr/>
-<h2 id="1-%C2%B7-Load-and-verify-structure-%C2%B7-essay-%C2%A72.2">1 · Load and verify structure · essay §2.2<a class="anchor-link" href="#1-%C2%B7-Load-and-verify-structure-%C2%B7-essay-%C2%A72.2">¶</a></h2>
+<h2 id="1-%C2%B7-Load-and-verify-structure">1 · Load and verify structure<a class="anchor-link" href="#1-%C2%B7-Load-and-verify-structure">¶</a></h2>
 </div>
 </div>
 </div>
@@ -8084,7 +8084,7 @@ empty. This shape bounds everything Phase 1 may claim.</p>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <hr/>
-<h2 id="2-%C2%B7-Inspection-branch:-%22is-the-workbook-internally-sound?%22-%C2%B7-essay-%C2%A72.2">2 · Inspection branch: "is the workbook internally sound?" · essay §2.2<a class="anchor-link" href="#2-%C2%B7-Inspection-branch:-%22is-the-workbook-internally-sound?%22-%C2%B7-essay-%C2%A72.2">¶</a></h2><p>The pipeline splits here (essay <strong>Figure 1</strong>): inspecting the data and repairing it are
+<h2 id="2-%C2%B7-Inspection-branch:-%22is-the-workbook-internally-sound?%22">2 · Inspection branch: "is the workbook internally sound?"<a class="anchor-link" href="#2-%C2%B7-Inspection-branch:-%22is-the-workbook-internally-sound?%22">¶</a></h2><p>The pipeline splits here: inspecting the data and repairing it are
 separate jobs with separate evidence. Inspection runs <strong>on the raw scale, before any
 treatment</strong>, so that any defect remains visible to check rather than being silently corrected away.</p>
 </div>
@@ -8262,14 +8262,9 @@ treatment</strong>, so that any defect remains visible to check rather than bein
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p><strong>Finding (essay §2.2).</strong> All eight headers agree with their item means inside the configured
-0.05 tolerance, so the roll-ups are arithmetically sound. Two categories nonetheless average
-1–5 items together with a 1–10 item: <em>Working for AccessFintech</em> and <em>Work/Life Balance</em>. Their
-headers are therefore not interpretable on either ruler, and a theme can appear to be the
-company's strongest area purely because a 1–10 item inflated its mean.</p>
-<p>Arithmetically correct and analytically usable are different properties, and only the second one
-matters here. <strong>Consequence: no workbook roll-up is reused; every category score downstream is
-recomputed from harmonised items.</strong></p>
+<p><strong>Finding.</strong> All eight headers match the mean of their own items, within the configured 0.05 tolerance, so the roll-ups are arithmetically sound.</p>
+<p>But two categories: <em>Working for AccessFintech</em> and <em>Work/Life Balance</em> are mixed 1–5 items with a 1–10 item, which inflates their means. Arithmetically correct is not the same as usable.</p>
+<p><strong>Consequence: no workbook roll-up is reused; every category score downstream is recomputed from harmonised items.</strong></p>
 </div>
 </div>
 </div>
@@ -8281,7 +8276,7 @@ recomputed from harmonised items.</strong></p>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <hr/>
-<h2 id="3-%C2%B7-Treatment-branch:-producing-the-analysis-ready-dataset-%C2%B7-essay-%C2%A72.2">3 · Treatment branch: producing the analysis-ready dataset · essay §2.2<a class="anchor-link" href="#3-%C2%B7-Treatment-branch:-producing-the-analysis-ready-dataset-%C2%B7-essay-%C2%A72.2">¶</a></h2>
+<h2 id="3-%C2%B7-Treatment-branch:-producing-the-analysis-ready-dataset">3 · Treatment branch: producing the analysis-ready dataset<a class="anchor-link" href="#3-%C2%B7-Treatment-branch:-producing-the-analysis-ready-dataset">¶</a></h2>
 </div>
 </div>
 </div>
@@ -8438,7 +8433,7 @@ recomputed from harmonised items.</strong></p>
 <tbody>
 <tr>
 <td><strong>What</strong></td>
-<td>Rescale the two 1–10 items onto the 1–5 metric: <strong>v₅ = 1 + (v₁₀ − 1) × 4/9</strong>. (full mathematics in essay report, Appendix B3)</td>
+<td>Rescale the two 1–10 items onto the 1–5 metric: <strong>v₅ = 1 + (v₁₀ − 1) × 4/9</strong>.</td>
 </tr>
 <tr>
 <td><strong>Why this method</strong></td>
@@ -8559,8 +8554,8 @@ assumption for Likert data, recorded in <code>tab02</code> rather than hidden.</
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <hr/>
-<h2 id="4-%C2%B7-Consolidated-quality-evidence-%C2%B7-essay-%C2%A72.2">4 · Consolidated quality evidence · essay §2.2<a class="anchor-link" href="#4-%C2%B7-Consolidated-quality-evidence-%C2%B7-essay-%C2%A72.2">¶</a></h2><p>Issue → how it was detected → how it was treated → what risk remains. This single table is the
-evidence that analytical decisions reflect the data's integrity problems (essay <strong>Table 2</strong>).</p>
+<h2 id="4-%C2%B7-Consolidated-quality-evidence">4 · Consolidated quality evidence<a class="anchor-link" href="#4-%C2%B7-Consolidated-quality-evidence">¶</a></h2><p>Issue → how it was detected → how it was treated → what risk remains. This single table is the
+evidence that analytical decisions reflect the data's integrity problems; it is saved as <code>tab02</code>.</p>
 </div>
 </div>
 </div>
@@ -8695,7 +8690,7 @@ evidence that analytical decisions reflect the data's integrity problems (essay 
 <hr/>
 <h2 id="Boundary-statement">Boundary statement<a class="anchor-link" href="#Boundary-statement">¶</a></h2><p>This aggregated, single-wave, demographically thin file supports <strong>description only</strong>. It
 cannot establish which factors drive engagement, quantify individual risk, show change over
-time, or segment by demographics. That boundary is the design brief for Phase 2 (essay §3.6).</p>
+time, or segment by demographics. That boundary is the design brief for Phase 2.</p>
 <p><strong>Next:</strong> <code>02_phase1_diagnostic.ipynb</code></p>
 </div>
 </div>

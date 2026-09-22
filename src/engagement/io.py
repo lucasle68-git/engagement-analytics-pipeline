@@ -1,4 +1,4 @@
-"""Data loading, structural validation and tidy reshaping (ILO1: integration).
+"""Data loading, structural validation and tidy reshaping.
 
 The supplied workbook is an AGGREGATED heatmap, not raw responses:
 - `Company Overall (107)` holds the company-wide MEAN per item;
@@ -28,7 +28,7 @@ def load_heatmap(cfg: dict[str, Any]) -> pd.DataFrame:
     ------------
     1. Take the workbook path from config (`paths.raw_workbook`).
     2. If the file is absent, stop with a message telling the reader where to
-       put it. 
+       put it.
     3. Read the sheet named in config (`results`) into a wide DataFrame.
     4. Hand it to `validate_raw_structure` BEFORE returning, so no caller can
        ever receive a workbook whose shape has not been checked.

@@ -1,7 +1,7 @@
 """Phase 2 modelling: drivers, risk, explainability (RO2, RO3b).
 
 Every function operates on the SYNTHETIC panel and demonstrates method
-capability, never company fact. Design principles (methodology §4.3.5):
+capability, never company fact. Design principles:
 an interpretable baseline is always estimated alongside a performance model;
 models are selected on recall and PR-AUC (missing an at-risk employee costs
 more than a false alert); temporal validation (train early waves, test the

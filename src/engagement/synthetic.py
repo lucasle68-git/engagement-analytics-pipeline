@@ -1,29 +1,29 @@
 """Phase 2 input — calibrated synthetic-data generator + validators.
 
-Purpose (methodology §4.3): build an individual-level, multi-wave,
+Purpose: build an individual-level, multi-wave,
 demographically rich dataset that is CONSISTENT WITH the real 2024 aggregates,
 so the analytic pipeline the real data cannot support can be demonstrated.
 
 Design
 ------
-1. Marginal calibration — for the 34 real items, each department's simulated
+1. Marginal calibration: for the 34 real items, each department's simulated
    wave-1 mean matches the reconstructed real absolute score (native 1-5 or
    1-10 scale) within `synthetic.calibration_tolerance`, enforced by an
    iterative mean-matching loop after ordinal discretisation.
-2. Theory-informed dependence — construct latents are drawn from a Gaussian
+2. Theory-informed dependence: construct latents are drawn from a Gaussian
    copula whose correlations with the UWES-style engagement latent are set in
    `config.yaml -> synthetic.target_correlations` (Mazzetti et al. 2021;
    Bakker & Demerouti 2017; Saks 2006; Edmondson 1999; Choudhary & Jain 2024;
    Gannon & Hieker 2022).
-3. Instrument-complete variables — constructs the 2024 survey lacks are added:
+3. Instrument-complete variables: constructs the 2024 survey lacks are added:
    UWES engagement block (outcome), personal resources, technology/work-mode,
    justice, psychological safety, ESG alignment.
-4. Demographics & waves — region, tenure, role level, work mode;
+4. Demographics & waves: region, tenure, role level, work mode;
    `n_waves` panel waves with small controlled construct-level drift.
    (A 'function' field was removed: with anonymised single-letter departments
    there is no real information to derive it from, and a fabricated copy of
    `department` would silently duplicate a model feature.)
-5. Reproducibility — single seed from config; parameters saved with the data.
+5. Reproducibility: single seed from config; parameters saved with the data.
 
 Claim boundary: outputs demonstrate METHOD CAPABILITY, never facts about
 AccessFintech's workforce. Correlational structure is partly imposed.
@@ -339,7 +339,8 @@ def validate_fidelity(data: pd.DataFrame, item_map: pd.DataFrame,
     """Quality gate 1: wave-1 department x item means vs real targets.
 
     Returns dict with per-item report, worst error, and pass flag. The
-    pipeline/notebook HALTS if `passed` is False (ILO1 applied to generated
+    pipeline/notebook HALTS if `passed` is False (the same governance rule
+    applied to generated
     data). Also checks the department composite RANKING is reproduced
     (Spearman), tying Phase 2 back to the Phase 1 composite index.
 

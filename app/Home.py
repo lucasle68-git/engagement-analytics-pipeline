@@ -1,27 +1,28 @@
 """Streamlit stakeholder report — Home / executive summary.
 
-Design principles (see coding report §8):
+Design principles:
 - Plain language first; technical detail behind expanders.
-- A persistent provenance banner on every page — governance, not decoration.
-- The app only READS pipeline outputs; it never recomputes analysis, so a number
-  here cannot drift from the notebook that produced it.
+- A provenance banner on every page — governance, not decoration.
+- The app only READS pipeline outputs; it never recomputes the analysis, so a
+  number here cannot drift from the notebook that produced it.
 
-Run from the project root:  streamlit run app/Home.py
+Run from the project root:  make app   (or: streamlit run app/Home.py)
 """
 
 from pathlib import Path
 import sys
 
 import streamlit as st
+import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _shared import (  # noqa: E402
-    figure, load_table, provenance, require, short_theme, survey_badge,
+    ROOT, figure, load_table, provenance, require, short_theme, survey_badge,
 )
 
 st.set_page_config(page_title="Employee Engagement Report", page_icon="📊", layout="wide")
 
-st.title("Employee Engagement — stakeholder report")
+st.title("Employee Engagement: Stakeholder report")
 st.caption(
     "An interactive read of the analysis for non-technical readers · "
     "MGT5496P Business Analytics Consultancy"
@@ -31,32 +32,59 @@ survey_badge()
 ranking = load_table("tab03_theme_ranking")
 require(ranking)
 
-st.subheader("Where engagement stands — in one view")
-c1, c2, c3 = st.columns(3)
+# ---------------------------------------------------------------- headline tiles
+st.subheader("Engagement at a glance")
+
 best, worst = ranking.iloc[0], ranking.iloc[-1]
-c1.metric("Strongest theme", short_theme(best.iloc[0]), f"{best['mean']:.2f} / 5")
-c2.metric("Weakest theme", short_theme(worst.iloc[0]), f"{worst['mean']:.2f} / 5")
+c1, c2, c3, c4 = st.columns(4)
+c1.metric(f"Strongest theme · {short_theme(best.iloc[0])}", f"{best['mean']:.2f} / 5")
+c2.metric(f"Weakest theme · {short_theme(worst.iloc[0])}", f"{worst['mean']:.2f} / 5")
 
 gaps = load_table("tab04_gap_matrix")
 if gaps is not None:
-    below = int((gaps.set_index(gaps.columns[0]).mean(axis=1) < 0).sum())
-    c3.metric("Departments below company average", below)
+    per_dept = gaps.set_index(gaps.columns[0]).mean(axis=1)
+    c3.metric("Departments below company average",
+              f"{int((per_dept < 0).sum())} of {len(per_dept)}")
+
+composite = load_table("tab10_composite_index")
+if composite is not None:
+    company = composite.loc[composite.iloc[:, 0] == "Company", "composite_index"]
+    if not company.empty:
+        c4.metric("Company composite score", f"{float(company.iloc[0]):.2f} / 5")
 
 figure("fig01_theme_ranking")
 
-st.markdown(
-    """
-**What this means.** Scores sit on a single 1–5 scale — two questions were asked on
-1–10 and have been converted so everything is comparable. The ranking is worth reading
-for its *shape* rather than its level: themes covering the immediate working
-environment tend to sit above those covering the organisationally distant layers.
+# ---------------------------------------------------------------- what it means
+try:
+    cfg = yaml.safe_load((ROOT / "config" / "config.yaml").read_text(encoding="utf-8"))
+    ten_point = cfg.get("data", {}).get("ten_point_items", [])
+except Exception:
+    ten_point = []
+ten_point_list = "\n".join(f"- *{q}*" for q in ten_point) or "- *(see config.yaml)*"
 
-The more useful observation is how narrow the whole range is. When eight themes
-compress into a band this tight, a company-level theme ranking is a poor place to aim
-an intervention — which is why the next page moves down to department and item level.
+lo, hi = ranking["mean"].min(), ranking["mean"].max()
+
+st.markdown(
+    f"""
+**How to read the scores.** Every score is on one 1–5 scale. Two questions were
+asked on a 1–10 scale instead:
+
+{ten_point_list}
+
+They were converted with a simple straight-line rescale, `1 + (score − 1) × 4/9`,
+so 1 stays 1 and 10 becomes 5. That makes every question comparable.
+
+**What stands out.** Themes about people's day-to-day work: their team, their role,
+their manager, score higher than themes about the more distant layers of the
+organisation, such as heads of department and the executive team.
+
+But the whole range is narrow: all eight themes sit between **{lo:.2f}** and
+**{hi:.2f}**. A spread this small is a weak basis for choosing where to act. That is why
+the next pages move down to department level, and then to individual questions.
 """
 )
 
+# ---------------------------------------------------------------- navigation
 st.subheader("How to read this app")
 st.markdown(
     """
@@ -70,28 +98,44 @@ st.markdown(
 Pages 1–2 describe what the survey *can* support. Page 3 demonstrates the analysis the
 survey **cannot** support today, on generated data, to show what better data would
 unlock. Page 4 turns the gap between them into a survey specification.
+
+**Themes and drivers.** Pages 1–2 use the 2024 survey's 8 **themes**, which group the 34
+questions by *who* they are about. Pages 3–4 regroup the same questions into **drivers**,
+by *what they measure*. Page 3 shows the full mapping.
 """
 )
 
+# ---------------------------------------------------------------- expanders
 with st.expander("How were these numbers calculated?"):
     st.markdown(
-        "Department results in the source workbook are stored as *differences* from the "
-        "company average, so absolute scores are reconstructed first (department delta + "
-        "company mean). All questions are then placed on a common 1–5 scale, and every "
-        "theme score is recomputed from its own questions — the workbook's own theme "
-        "roll-ups are not reused, because two of them average a 1–10 question together "
-        "with 1–5 questions and are not interpretable on either scale. "
-        "Full detail: notebook `01_data_loading_quality.ipynb`."
+        """
+The survey file needs five steps before any number on this page can be trusted.
+
+1. **Load and check.** The file is read and its layout is checked: the right columns,
+   the right theme headings. If anything has changed, the run stops with a clear error
+   instead of producing a wrong answer.
+2. **Reshape.** The spreadsheet is turned into one row per department per question,
+   which makes every later step simple and testable.
+3. **Rebuild the real scores.** The file stores each department as a *difference* from
+   the company average, not as a score. So each score is rebuilt:
+   company average + department difference.
+4. **Put everything on one scale.** The two 1–10 questions are converted to 1–5, as
+   described above.
+5. **Recompute every theme.** Each theme score is recalculated from its own questions.
+   The file's own theme totals are not used, because two of them mix 1–10 and 1–5
+   questions and so do not mean anything on either scale.
+
+Full detail: notebook `01_data_loading_quality`.
+"""
     )
 
 if provenance() == "demo":
     with st.expander("Why does this say DEMO?"):
         st.markdown(
-            "The client's survey is confidential and is not distributed with this "
-            "project. To keep the analysis runnable and inspectable by anyone, the "
-            "repository ships a fabricated workbook with the *same structure* as the "
-            "real one — same questions, same scales, same encoding — and entirely "
-            "invented numbers.\n\n"
+            "The client's survey is confidential and is not shared with this project. So "
+            "that anyone can still run and check the analysis, the repository includes a "
+            "stand-in workbook with **the same structure** as the real one: the same "
+            "questions, the same scales, the same layout. Only the numbers are invented.\n\n"
             "The banner is not written by hand on each page: it is derived from "
             "`data.provenance` in `config/config.yaml`, the same switch that controls "
             "the badge stamped onto every saved figure. Point the project at the real "

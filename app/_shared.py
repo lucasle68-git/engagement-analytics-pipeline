@@ -51,13 +51,14 @@ def survey_badge() -> None:
     """Banner for a page built from the survey workbook (Phase 1)."""
     if provenance() == "demo":
         st.info(
-            "🟣 **Demo data** — invented numbers with the same structure as the client's "
-            "survey. The client file is not distributed with this project, so every figure "
-            "on this page demonstrates the analysis rather than reporting a company result."
+            "🟣 **Demo data:** The numbers are invented, but the structure matches the "
+            "client's survey. The real file is confidential and is not shared with this "
+            "project. Every figure here shows how the analysis works, not the company's "
+            "actual results."
         )
     else:
         st.success(
-            "🟢 **Real 2024 survey data** — aggregated and anonymised; no individual "
+            "🟢 **Real 2024 survey data:** aggregated and anonymised; no individual "
             "is identifiable."
         )
 
@@ -65,8 +66,8 @@ def survey_badge() -> None:
 def synthetic_badge() -> None:
     """Banner for a page built from the generated panel (Phase 2)."""
     st.warning(
-        "🟠 **Synthetic demonstration data** — shows what the analysis *can do* once the "
-        "right data exists. Not facts about any real workforce."
+        "🟠 **Synthetic demonstration data:** Shows what the analysis can do once the right "
+        "data exists: individual-level responses."
     )
 
 
@@ -111,12 +112,14 @@ def short_theme(name: str, limit: int = 20) -> str:
     "Team". The parenthetical goes too, and only then does length-based clipping
     apply as a backstop.
 
-    "My role at <company>" is special-cased: stripping its prefix would leave the
-    company name, which reads as a different theme entirely.
+    "My role at <company>" and "Working for <company>" are special-cased: stripping
+    their prefix would leave the bare company name, which reads as a different theme.
     """
     s = str(name).strip()
     if s.lower().startswith("my role at"):
         return "My role"
+    if s.lower().startswith("working for"):
+        return "Working for the company"
     for prefix in _THEME_PREFIXES:
         if s.startswith(prefix):
             s = s[len(prefix):]

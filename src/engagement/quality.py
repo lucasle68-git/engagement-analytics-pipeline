@@ -1,4 +1,4 @@
-"""Data-quality treatment (ILO1): the three preparation steps that precede
+"""Data-quality treatment: the three preparation steps that precede
 all analysis. Each function returns both the treated data AND a small report
 dataframe, so every quality decision is evidenced, not just applied.
 
@@ -183,9 +183,8 @@ def validate_structure(tidy_df: pd.DataFrame, cfg: dict[str, Any]) -> pd.DataFra
 def quality_summary(structure_report: pd.DataFrame) -> pd.DataFrame:
     """The consolidated issue -> detection -> treatment -> residual-risk table.
 
-    This is the single table that evidences 'analytical decisions reflect data
-    integrity and quality issues' (A1 descriptor, Completeness criterion), and
-    it is essay Table 2.
+    This is the single table showing that the analytical decisions respond to the
+    data's integrity and quality problems, and it is written to `tab02`.
 
     How it works: the five rows are written out explicitly — this is
     documentation expressed as code, so the audit trail is generated with the

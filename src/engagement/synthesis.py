@@ -1,17 +1,17 @@
 """Phase 3 — synthesis: Phase 1 vs Phase 2 comparison -> 2026 survey + actions.
 
-Implements methodology §4.4 and nothing more:
-  §4.4.1 capability_comparison: what Phase 1 could answer vs what Phase 2
-          unlocked, each gap mapped to a specific missing data element (RO4
-          evidence base).
-  §4.4.3 importance_performance: Phase 2 driver importance (relative weights,
-          synthetic) x Phase 1 real 2024 performance -> priority interventions.
+Four functions, and nothing more:
+  capability_comparison: what Phase 1 could answer vs what Phase 2 unlocked,
+          each gap mapped to a specific missing data element — the evidence
+          base for RO4.
+  importance_performance: Phase 2 driver importance (relative weights,
+          synthetic) x Phase 1 survey performance -> priority interventions.
           The headline is structural: the TOP drivers are constructs the 2024
           survey does not measure at all.
-  §4.4.2 survey_redesign: keep / add / drop / fix table, every row
-          traced to an analytical result or literature factor.
-  §4.4.4 traceability: deliverable -> refined objective -> client objective.
-        
+  survey_redesign: keep / add / drop / fix table, every row traced to an
+          analytical result or a literature factor.
+  traceability: deliverable -> refined objective -> client objective.
+
 
 Claim boundary: importance comes from the synthetic demonstration (method
 capability); performance comes from real 2024 data. The two are combined only
@@ -96,7 +96,7 @@ def importance_performance(drivers: pd.DataFrame,
     Reading order for the output: check `.attrs` BEFORE the quadrant column. If
     the IMPROVE cell is empty because importance and performance rank
     identically, that is arithmetic, not evidence that nothing needs improving
-    and the map should be reported that way (essay §5.2).
+    and the map should be reported that way (NB06 section B).
     """
     rows = []
     for con in drivers.index:
@@ -151,10 +151,10 @@ def importance_performance(drivers: pd.DataFrame,
 
 
 def capability_comparison() -> pd.DataFrame:
-    """§4.4.1 the headline table: each client question, what each phase could
+    """The headline table: each client question, what each phase could
     do about it, and the missing data element that made the difference.
 
-    Essay §5.1, Table 9 (tab20).
+    Written to `tab20`, read in NB06.
 
     Why this is a hard-coded table rather than a computation: the content is an
     argument, not a measurement. What makes it evidence is the fourth column —
@@ -192,9 +192,9 @@ def capability_comparison() -> pd.DataFrame:
 
 
 def survey_redesign() -> pd.DataFrame:
-    """§4.4.2: keep / add / drop-merge / fix, one-line justification each.
+    """Keep / add / drop-merge / fix, with a one-line justification each.
 
-    Essay §6.3, Table 10 (tab22).
+    Written to `tab22`, read in NB06.
 
     Rule applied to every row: the justification must cite either an analytical
     result in this project (a tabNN or a notebook) or a named literature source.
@@ -232,9 +232,9 @@ def survey_redesign() -> pd.DataFrame:
 
 
 def traceability() -> pd.DataFrame:
-    """§4.4.4 — deliverable -> refined objective -> client objective.
+    """Deliverable -> refined objective -> client objective.
 
-    Essay §6.1 (tab23). The closing audit, read in both directions: every
+    Written to `tab23`. The closing audit, read in both directions: every
     deliverable exists for a stated objective, and every objective has evidence
     behind it. A deliverable with no objective is scope creep; an objective with
     no deliverable is an unmet brief. Neither appears here.

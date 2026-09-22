@@ -25,7 +25,7 @@ means for the company, and every department stored as a *delta* from that mean. 
 responses, no demographics, no time dimension, and an empty `manager` column.
 
 Stakeholders wanted drivers of engagement, attrition risk scores, employee segments, and trends.
-**None of those are answerable from that file** — not because of method, but because the data
+**None of those are answerable from that file**, not because of method, but because the data
 elements they require were never collected.
 
 The project's argument is built on taking that seriously rather than working around it.
@@ -36,8 +36,31 @@ The project's argument is built on taking that seriously rather than working aro
 | **2 — Demonstration** | What would individual-level, multi-wave data unlock? | Synthetic panel, 1,000 employees × 3 waves | Method capability, never company fact |
 | **3 — Synthesis** | What must the 2026 survey collect? | Both | A specification, traceable to a measured gap |
 
-The deliverable that matters is Phase 3: every proposed survey change is traceable to a specific
-analysis that failed for a specific missing data element — a consequence, not a preference.
+The most important output is Phase 3. Every change proposed for the 2026 survey is backed by
+evidence from the analysis in Phases 1 and 2, so each recommendation follows logically from the
+data rather than from opinion.
+
+**Why three phases.** The logic is a clinician's. The company's engagement is the patient, and the
+2024 survey is a partial medical record. Phase 1 examines the patient on the records available.
+Phase 2 builds a simulated patient with the same profile, to show what a full record would reveal.
+Phase 3 compares the two: what can be treated now, and what has to be recorded differently next
+time.
+
+## What the project was asked to do
+
+The client set four objectives. Two of them could not be answered from the data supplied, so each
+was refined into a version that stays answerable on an evidence base that actually exists. That
+refinement is the project's argument, not a workaround.
+
+| | Client asked for | Refined into | Why the refined version delivers more |
+|---|---|---|---|
+| **RO1** | Analyse prior survey data for trends, themes and problem areas | Diagnose the 2024 profile: rank the eight themes, benchmark every department, locate the problem areas. Real data. | One wave cannot show a trend, but it sets the benchmark that later waves are measured against |
+| **RO2** | Statistical and ML models for the strongest predictors of engagement | Build and validate a driver-analysis pipeline on data fit for that purpose. Synthetic data. | Aggregated means cannot support credible modelling. Proving the pipeline on calibrated synthetic data means it is ready the moment real responses exist |
+| **RO3** | Identify disengagement risk across roles, teams and regions | (a) Flag the risk the real data can show; (b) demonstrate an explainable risk model for use once richer data exists. Both. | No group can be profiled without demographics. The model outlasts the profile: at-risk groups change every wave, the model does not |
+| **RO4** | Design a data-driven 2026 survey | Deliver a redesigned 2026 survey together with the reproducible pipeline that reads it | A questionnaire alone leaves the client dependent on outside analysis. Pairing it with the pipeline builds in-house capability |
+
+The notebooks refer to these as RO1–RO4. `outputs/tables/tab23_traceability.csv` traces every
+deliverable in the project back to one of them.
 
 ## What this demonstrates
 
@@ -48,61 +71,72 @@ analysis that failed for a specific missing data element — a consequence, not 
 | **Machine learning** | Johnson relative-weights driver analysis, imbalanced classification with temporal validation and threshold tuning, SHAP explanations, k-means segmentation held to a stated standard |
 | **Synthetic data** | Gaussian-copula generator calibrated to real aggregates, with **two blocking quality gates** — fidelity and plausibility — that fail the run rather than warn |
 | **Software practice** | `src/` package, `pytest` suite on the correctness-critical transforms, one-command reproducible pipeline, pinned dependencies, generated provenance manifest |
-| **Judgement & communication** | Every analysis preceded by a decision box (*what · why this method · what was rejected · what it feeds*); claim boundaries enforced by a function, not by discipline; a four-page Streamlit app translating the results for non-technical stakeholders |
+| **Judgement & communication** | Each analysis starts with a short note explaining what it does, why this method was chosen, what other options were ruled out, and what it leads to; the code itself prevents any result from claiming more than the data can show; a four-page Streamlit app explains the results in plain language for non-technical readers |
 
 ## Three things worth looking at
 
-**1. A guard that cannot be forgotten.** Every figure in the project is written to disk by one
-function, `viz.save_figure`, which stamps a provenance badge and refuses to save a figure that has
-not declared where its data came from. Phase 1 figures are badged REAL, Phase 2 SYNTHETIC — and
-when the pipeline runs on the demo workbook, `real` is automatically downgraded to **DEMO** from
-config, so a public clone *cannot* produce a chart captioned as real client data. The guarantee is
-structural rather than a matter of remembering.
+**1. Every chart shows where its data came from.** All figures are saved through one function,
+`viz.save_figure`. It adds a label to each chart (REAL, SYNTHETIC or DEMO) and will not save a
+chart unless its data source is stated. When the pipeline runs on the demo data, REAL labels
+switch to DEMO automatically, so a public copy of this project can never show a chart that
+claims to use real client data.
 
-**2. Quality gates that block.** The synthetic generator is not trusted because it looks
-reasonable. Gate 1 checks every department × construct cell against the calibration tolerance *and*
-requires the department ranking to be reproduced exactly (ρ = 1.00) — a generator that matched the
-means while scrambling the order would be useless. Gate 2 checks that the correlations imposed from
-the literature survive discretisation, correcting for measurement attenuation before comparing.
-Both halt the pipeline on failure. `tests/test_synthetic.py` tests that they halt it.
+**2. Quality checks that stop the run.** The synthetic data is tested, not just assumed to be
+fine. Check 1 confirms that each department's scores match their targets and that departments
+are ranked in exactly the same order. Check 2 confirms that the relationships between measures,
+taken from published research, are still present in the generated data. If either check fails,
+the pipeline stops. `tests/test_synthetic.py` confirms that this actually happens.
 
-**3. Negative results reported as results.** The clustering section found no department archetypes,
-and says so. The persona section is held to the *same* silhouette standard as Phase 1 and fails it
-in the same way, and says so. An importance–performance map built on ~19 aggregated units is
-reported as exploratory with its three weaknesses named. A project that discovers structure only
-when it needs some has a method problem, not a finding.
+**3. Negative results are reported honestly.** The clustering found no clear groups of
+departments, and the analysis says so. The employee segmentation was held to the same standard
+and also found no clear groups. The importance–performance map uses only about 19 data points,
+so it is labelled exploratory and its three weaknesses are listed. Good analysis reports what
+the data shows, not what the project hopes to find.
 
 ---
 
 ## Quick start
 
-Python 3.10+. Three commands, about two minutes.
+There are three ways in, depending on how much time you have. None of them needs the client's data.
+
+| You want to… | Do this | Time |
+|---|---|---|
+| **Read** the analysis | Open `outputs/notebooks_html/` in a browser. No installation. | 10 min |
+| **Browse** the results as a stakeholder would | `make install` once, then `make app` | 2 min to set up |
+| **Rebuild** every figure and table yourself | `make install` once, then `make all` | ~2 min to run |
+
+Python 3.10+ is needed for the last two. All commands run from the project root.
 
 ```bash
-pip install -r requirements.txt && pip install -e .
-make demo-data        # write the demo survey workbook to data/raw/
-make test             # 6 tests on the correctness-critical transforms
-make pipeline         # execute notebooks 01-06, export HTML, write the manifest
+make install     # once: install the dependencies and the package
+make app         # open the stakeholder report at http://localhost:8501 (Ctrl+C to stop)
+make test        # 6 tests on the correctness-critical transforms
+make pipeline    # execute notebooks 01-06, export HTML, write the manifest
+make all         # test, then pipeline
+make help        # list every command
 ```
 
-`make all` runs the last two in order. Outputs land in `outputs/figures/`,
-`outputs/tables/` and `outputs/notebooks_html/`.
+The repository ships with the outputs already built, so `make app` works straight after
+`make install`. Outputs land in `outputs/figures/`, `outputs/tables/` and
+`outputs/notebooks_html/`. `make demo-data` rewrites the demo workbook if you ever need a fresh
+copy; it is already committed.
 
-**To read rather than run:** open `outputs/notebooks_html/` in a browser — six self-contained HTML
-files, one per notebook, no installation required. Start at `01`, then `03`, then `06` for a
-ten-minute route.
+**A ten-minute reading route** through `outputs/notebooks_html/`, and what to look for at each stop:
 
-**To browse the results interactively:**
+| Read | Question it answers | What to look for |
+|---|---|---|
+| `01` | What is wrong with the data, and what does that allow? | The two scale defects found in the workbook, and the boundary statement they lead to |
+| `03` | Do departments form groups? How many things does the survey really measure? | A negative result reported as a result, and the halo finding tested twice by two methods |
+| `06` | What must the 2026 survey collect? | Every proposed change traced back to an analysis that failed for a missing data element |
 
-```bash
-streamlit run app/Home.py
-```
+Read `02`, `04` and `05` as well for the full argument: `02` is the diagnostic, `04` builds and
+tests the synthetic data, `05` runs the analysis the real data cannot support.
 
 ## The stakeholder app
 
-The analysis has two audiences, and they need different artefacts. `app/` is a four-page Streamlit
-report for the second one — the people who have to act on the findings but will not open a
-notebook.
+The notebooks are written for analysts. `app/` is a four-page Streamlit report for decision-makers,
+such as the HR Director, People & Culture leads, department heads and the leadership team. They
+will not work with the code; they need clear numbers and charts to decide where to act.
 
 <p align="center">
   <img src="docs/app_screenshot.png" width="88%" alt="The stakeholder app, showing the DEMO provenance banner">
@@ -116,11 +150,13 @@ notebook.
 | 3 · Drivers | What actually drives engagement? | Synthetic |
 | 4 · 2026 Survey Plan | So what do we change? | Both |
 
-Two design rules shape it. **It reads, it never recomputes** — every number comes from a CSV the
-pipeline wrote, so a figure in the app cannot drift from the notebook that produced it. And every
-page opens with a provenance banner drawn from the *same* `data.provenance` switch that badges the
-figures, so the app cannot claim real client data while showing demo numbers either. The
-governance control is one function (`app/_shared.py`), not a sentence repeated on five pages.
+The app follows two design rules:
+
+1. **It only reads results, it never recalculates them.** Every number comes from the CSV files
+   the pipeline creates, so the app always matches the notebooks.
+2. **Every page says where its data comes from.** A notice at the top of each page shows whether
+   the numbers are REAL, DEMO or SYNTHETIC. It uses the same setting as the chart labels, so the
+   app can never present demo numbers as real client data.
 
 Each panel is followed by a plain-language *what this means* — including where the honest reading
 is a negative one, such as the department clustering that found no archetypes.
@@ -136,9 +172,10 @@ is a negative one, such as the department clustering that found no archetypes.
 | 05 | `05_phase2_modelling.ipynb` | What would better data unlock: drivers, risk, segments, trends? |
 | 06 | `06_phase3_synthesis.ipynb` | What must the 2026 survey collect? |
 
-Each notebook follows the same shape: a header stating what it does, a **decision box** before
-every analysis, the code and its results, then a short reading of the result. Notebooks contain
-almost no logic — the analysis lives in `src/engagement/` and is called from them.
+Each notebook follows the same structure: a header stating what it does, a **decision box** before
+every analysis, the code and its results, then a short interpretation of the result. The notebooks
+focus on the author's analysis and insights. The functions, algorithms and logic behind them live
+in `src/engagement/`, where each one is explained.
 
 ## How the code is organised
 
@@ -173,9 +210,9 @@ Every function carries a plain-English **"How it works"** description written as
 make test
 ```
 
-Six tests, one per claim the analysis makes about its own data — chosen for the steps where a
-silent error would invalidate everything built on top of it, and each guard tested on both its
-accepting and its rejecting path.
+There are six tests. Each one checks a key step where a hidden error would break every result
+that comes after it. Every check is tested both ways: it must accept correct data and reject
+wrong data.
 
 | Test | What it proves |
 |---|---|
@@ -188,23 +225,25 @@ accepting and its rejecting path.
 
 ## Reproducibility
 
-Seeded (`project.seed` in config), pinned (`requirements.txt`), and recorded: every pipeline run
-rewrites `outputs/run_manifest.json` with the timestamp, seed, Python and package versions,
-per-notebook runtime and output counts, so the provenance record cannot go stale. The demo
+Every pipeline run is recorded in `outputs/run_manifest.json`: when it ran, the random seed
+(`project.seed` in config), the Python and package versions (pinned in `requirements.txt`), how
+long each notebook took and how many outputs it produced. This means anyone can see exactly how a
+result was made and re-run the project under the same conditions to get the same result. The
+record is rewritten on every run, so it is always up to date. The demo
 workbook has its own fixed seed, independent of the analysis seed, so re-seeding the analysis to
 test its stability does not move the data underneath it.
 
 ## Data governance
 
 The 2024 survey belongs to the client and is not redistributable, so **it is not in this
-repository** — and neither is anything derived from it. What is here instead is
+repository**, and neither is anything derived from it. What is here instead is
 `data/raw/engagement_survey_2024.xlsx`, written by `scripts/make_demo_workbook.py`: the same sheet
 name, the same 22 columns and 42 rows, the same category headers, the same two 1-10 items, the
-same delta-from-company-mean encoding — and entirely invented numbers.
+same delta-from-company-mean encoding and entirely invented numbers.
 
 The demo is not uniform noise. It deliberately reproduces the three *structural* properties the
-analysis is written to detect — a theme ordering, a department-level general factor, and mixed
-response scales inside a roll-up — so the notebooks demonstrate real arguments rather than render
+analysis is written to detect: a theme ordering, a department-level general factor, and mixed
+response scales inside a roll-up, so the notebooks demonstrate real arguments rather than render
 empty ones. No value in it is derived from, fitted to, or calibrated against the client's file.
 
 Consequently:
@@ -216,7 +255,7 @@ Consequently:
 - The survey instrument's question wording is retained because the analysis code and config key on
   it; the named individuals in one item of the real instrument are replaced with a generic phrase.
 - `data.provenance` in `config/config.yaml` is the switch. Set it to `real` with the client
-  workbook in place and the badges change back — the analysis code itself is identical either way.
+  workbook in place and the badges change back, the analysis code itself is identical either way.
 
 Applying the confidentiality boundary in the published artefact, rather than only asserting it in
 the report, is the same governance control the project argues for.

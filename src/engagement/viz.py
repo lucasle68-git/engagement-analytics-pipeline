@@ -1,6 +1,6 @@
 """Styled, captioned figures. Every figure passes through save_figure(), which
 stamps a data-provenance badge (REAL vs DEMO vs SYNTHETIC), governance enforced
-in code, not left to manual discipline (ILO1).
+in code, not left to manual discipline.
 
 Two kinds of function live here, and the split is deliberate:
 
@@ -66,8 +66,8 @@ def save_figure(
     5. Return the path so the notebook can print where the file went.
 
     Why this is a function and not four lines in each notebook: the badge is a
-    data-governance control (ILO1). Phase 1 figures show real client data and
-    Phase 2 figures show synthetic data, and a marker or client seeing them out
+    data-governance control. Phase 1 figures show real client data and
+    Phase 2 figures show synthetic data, and a reader or client seeing them out
     of context must not have to guess which is which. Routing every figure
     through one function makes the badge impossible to forget. The guarantee
     is structural rather than a matter of remembering.
@@ -96,7 +96,7 @@ def heatmap(matrix, ax=None, center: float | None = 0.0, fmt: str = ".2f"):
     How it works: if no axes are supplied, size them from the matrix shape so a
     34-column matrix does not get squeezed into the same box as an 8-column
     one. Then one seaborn call with the house settings. `annot=True` prints
-    the number inside each cell (a marker reading the report should not have to
+    the number inside each cell (a reader of the report should not have to
     decode a colour into a value), and `center=0` anchors the diverging
     red-to-green scale at zero.
 
