@@ -1,5 +1,7 @@
 # Employee Engagement Analytics — diagnostic, synthetic demonstration, survey redesign
 
+**[▶ Open the live app](https://engagement-analytics-pipeline-dpmibzsxdcprnzvbaobd4e.streamlit.app/)** · no installation, runs on the bundled demo data
+
 A two-phase analytics consultancy project for a fintech client: diagnose what an aggregated
 employee-engagement survey **can** support, demonstrate on synthetic data what better data
 **would** unlock, and convert the gap between the two into a redesigned 2026 instrument.
@@ -139,7 +141,7 @@ such as the HR Director, People & Culture leads, department heads and the leader
 will not work with the code; they need clear numbers and charts to decide where to act.
 
 <p align="center">
-  <img src="docs/app_screenshot.png" width="88%" alt="The stakeholder app, showing the DEMO provenance banner">
+  <a href="https://engagement-analytics-pipeline-dpmibzsxdcprnzvbaobd4e.streamlit.app/"><img src="docs/app_screenshot.png" width="88%" alt="The stakeholder app, showing the DEMO provenance banner"></a>
 </p>
 
 | Page | Question | Data |
