@@ -113,11 +113,11 @@ measured on data the model had not seen.
 
 **How to read it**
 
-- **Better than chance.** Random guessing scores 0.50 ROC-AUC and 0.20 PR-AUC (the share of
+- **Better than chance:** Random guessing scores 0.50 ROC-AUC and 0.20 PR-AUC (the share of
   at-risk employees). The best model roughly doubles the chance level on PR-AUC.
-- **Recall first, on purpose.** The alert threshold is set to catch about three in four
+- **Recall first, on purpose:** The alert threshold is set to catch about three in four
   at-risk employees (72–83% on the test wave). Missing someone who is disengaging costs more than an unnecessary
-  check-in, so the model accepts more false alarms (about 3 in 10 alerts are correct, against 2 in
+  check-in with employees, so the model accepts more false alarms (about 3 in 10 alerts are correct, against 2 in
   10 by chance).
 - **Synthetic data.** These figures come from the synthetic panel in the committed demo run. They
   show that the modelling pipeline works end to end, not how accurate it would be on the client's
