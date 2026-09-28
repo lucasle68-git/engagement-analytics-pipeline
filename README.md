@@ -119,9 +119,6 @@ measured on data the model had not seen.
   at-risk employees (72–83% on the test wave). Missing someone who is disengaging costs more than an unnecessary
   check-in with employees, so the model accepts more false alarms (about 3 in 10 alerts are correct, against 2 in
   10 by chance).
-- **Synthetic data.** These figures come from the synthetic panel in the committed demo run. They
-  show that the modelling pipeline works end to end, not how accurate it would be on the client's
-  real employees.
 
 ---
 
