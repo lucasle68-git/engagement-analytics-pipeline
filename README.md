@@ -97,6 +97,32 @@ and also found no clear groups. The importance–performance map uses only about
 so it is labelled exploratory and its three weaknesses are listed. Good analysis reports what
 the data shows, not what the project hopes to find.
 
+## Model performance
+
+The disengagement-risk model flags employees in the **bottom 20% of engagement**. Three models
+were trained on the earlier survey waves and tested on the latest one, so every score below is
+measured on data the model had not seen.
+
+| Model | ROC-AUC | PR-AUC | Recall* | Precision* |
+|---|---|---|---|---|
+| Logistic regression (baseline) | 0.74 | 0.34 | 0.72 | 0.27 |
+| Random forest | **0.79** | **0.45** | 0.78 | **0.31** |
+| Gradient boosting | 0.76 | 0.40 | **0.83** | 0.27 |
+
+\*At the tuned alert threshold. Full table: `outputs/tables/tab17_risk_model_comparison.csv`.
+
+**How to read it**
+
+- **Better than chance.** Random guessing scores 0.50 ROC-AUC and 0.20 PR-AUC (the share of
+  at-risk employees). The best model roughly doubles the chance level on PR-AUC.
+- **Recall first, on purpose.** The alert threshold is set to catch about three in four
+  at-risk employees (72–83% on the test wave). Missing someone who is disengaging costs more than an unnecessary
+  check-in, so the model accepts more false alarms (about 3 in 10 alerts are correct, against 2 in
+  10 by chance).
+- **Synthetic data.** These figures come from the synthetic panel in the committed demo run. They
+  show that the modelling pipeline works end to end, not how accurate it would be on the client's
+  real employees.
+
 ---
 
 ## Quick start
