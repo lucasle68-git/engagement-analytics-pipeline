@@ -1,0 +1,31 @@
+# Runs the pytest suite on every push and pull request, on a clean machine,
+# using the same `make install` / `make test` commands as the README.
+# Python 3.10 is the minimum the project supports; 3.12 checks a newer release.
+name: tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Install dependencies and the package
+        run: make install PYTHON=python
+
+      - name: Run tests
+        run: make test PYTHON=python
