@@ -212,11 +212,18 @@ if not weak.empty:
         f"- **Some drivers add little once the others are counted:** "
         f"{', '.join(nice(c) for c in weak['construct'])} (effect not clearly above zero)."
     )
-lines.append(
-    f"- **The ranking is stable:** Overlap between drivers is low (VIF at most "
-    f"{drivers['VIF'].max():.2f}; values near 1 mean no overlap), so no driver is borrowing "
-    "another's credit."
-)
+max_vif = drivers["VIF"].max()
+if max_vif < 5:
+    lines.append(
+        f"- **The ranking is stable:** Overlap between drivers is low (VIF at most "
+        f"{max_vif:.2f}; values near 1 mean no overlap), so no driver is borrowing "
+        "another's credit."
+    )
+else:
+    lines.append(
+        f"- **Some drivers overlap:** The highest VIF is {max_vif:.2f}, above the usual concern "
+        "level of 5, so the shares of overlapping drivers should be read with care."
+    )
 if TARGETS:
     tgt = pd.Series({k: v for k, v in TARGETS.items() if k in set(drivers["construct"])})
     tgt_top = set(tgt.nlargest(3).index)
@@ -227,6 +234,12 @@ if TARGETS:
             f"({', '.join(nice(c) for c in tgt.nlargest(3).index)}) are exactly the three it ranks first."
         )
 st.markdown("**What the result shows:**\n\n" + "\n".join(lines))
+with st.expander("Technical detail"):
+    st.markdown(
+        f"Johnson’s relative weights on standardised regression; overlap checked with VIF "
+        f"(max {max_vif:.2f}, concern above 5)"
+    )
+    st.dataframe(drivers, hide_index=True, use_container_width=True)
 
 # ====================================================================== 2. risk
 st.subheader("2. Who is at risk of disengaging")
@@ -250,6 +263,7 @@ if risk is not None:
         "Catches (tuned)": risk["recall@tuned"],
         "Flags that are right (tuned)": risk["precision@tuned"],
         "Overall quality (PR-AUC)": risk["pr_auc"],
+        "Ranking quality": risk["roc_auc"],
     })
     st.dataframe(rv, hide_index=True, use_container_width=True,
                  column_config={c: st.column_config.NumberColumn(format="%.2f")
@@ -272,6 +286,12 @@ if risk is not None:
   says "everyone is fine" would still look accurate.
 """
     )
+    with st.expander("Technical detail"):
+        st.markdown(
+            "Model selected on PR-AUC, which suits a minority outcome better than accuracy. "
+            "Trained on waves 1–2, tested on wave 3"
+        )
+        st.dataframe(risk, hide_index=True, use_container_width=True)
 
 # ====================================================================== 3. SHAP
 st.subheader("3 · What the risk model relies on")
@@ -350,6 +370,12 @@ if personas is not None:
         "risk rates and profiles in a form a manager could act on, ready for real data."
     )
     st.markdown("**What the result shows.**\n\n" + "\n".join(p_lines))
+    with st.expander("Technical detail"):
+        st.markdown(
+            "k-means on standardised driver scores; number of groups chosen by silhouette "
+            "score, below 0.25 = no real structure. Same test as departments on page 2. "
+            "Details in notebook 05."
+        )
 
 # ====================================================================== 5. trends
 st.subheader("5 · Tracking change across waves")

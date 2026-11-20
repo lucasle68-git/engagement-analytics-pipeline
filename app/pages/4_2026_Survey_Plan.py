@@ -26,6 +26,78 @@ def nice(x: str) -> str:
     return NICE.get(str(x), str(x).replace("_", " ").capitalize())
 
 
+# Plain-language versions of tab20 / tab22, keyed by the raw table's client question /
+# element. A row whose key is missing here falls back to the raw text, so a change in
+# synthesis.py can never silently drop a row from the page.
+CAP_COLS = ["Client question", "Today’s survey", "What the demonstration showed",
+            "What 2026 must collect"]
+CAP_PLAIN = {
+    "What drives engagement? (O2)": (
+        "What drives engagement?",
+        "Can’t answer: only department averages, no direct engagement score",
+        "Ranked the drivers and confirmed the ranking with more than one method",
+        "Each person’s answers + a direct engagement measure"),
+    "Who is at risk? (O3)": (
+        "Who is at risk?",
+        "Only by department: flags warning-sign questions, not people",
+        "A risk score per person, tested on a later wave, with reasons shown",
+        "Each person’s answers + role, region and tenure"),
+    "Are the scales sound?": (
+        "Are the scales reliable?",
+        "Can’t be tested on averages. One flaw found: mixed 1–5 and 1–10 scales",
+        "Drivers measured with only 2–3 questions were the least reliable",
+        "Each person’s answer to every question"),
+    "Are there segments? (O1/O3)": (
+        "Are there employee segments?",
+        "No: departments don’t split into distinct types",
+        "A ready-made grouping tool: size, risk rate and profile per group",
+        "Profile data + department sizes"),
+    "Is engagement moving? (O1)": (
+        "Is engagement changing?",
+        "Can’t tell: one survey, one point in time",
+        "Scores tracked across three survey waves",
+        "The same survey, repeated over time"),
+}
+
+RD_COLS = ["Decision", "What", "Why"]
+RD_PLAIN = {
+    "Manager / team / leadership relationship blocks": (
+        "KEEP", "Manager, team and leadership questions",
+        "Good coverage of support at work, and the company’s current strengths"),
+    "eNPS / recommendation and retention items": (
+        "KEEP", "Recommendation (eNPS) and intent-to-stay questions",
+        "A stable yardstick to compare year on year"),
+    "UWES-9 engagement block (vigour / dedication / absorption)": (
+        "ADD", "A standard engagement scale (9 questions)",
+        "There is no direct engagement score today; every driver and risk model needs one"),
+    "Personal-resources scale (>=4 items)": (
+        "ADD", "Personal resources: self-belief, optimism, resilience (4+ questions)",
+        "Strongest link to engagement in published research and a top driver in the "
+        "demonstration, yet not asked in 2024"),
+    "Technology & work-mode items + work-mode field": (
+        "ADD", "Technology and work-mode questions (remote / hybrid / office)",
+        "Matters for distributed teams, and carried real weight in the demonstration"),
+    "Psychological-safety and justice scales (>=4 items each)": (
+        "ADD", "Psychological safety and fairness (4+ questions each)",
+        "Blocks of only 2–3 questions measured least reliably"),
+    "ESG-alignment items": (
+        "ADD", "Alignment with environmental and social goals (ESG)",
+        "An emerging lever in fintech"),
+    "Demographics: region, tenure, role level, work mode, department size": (
+        "ADD", "Profile: region, tenure, role level, work mode, department size",
+        "Needed to find who is at risk; even department sizes were missing"),
+    "Redundant sentiment items within 'Working for AccessFintech'": (
+        "DROP/MERGE", "Overlapping sentiment questions in “Working for AccessFintech”",
+        "They partly measure the outcome itself; the new engagement scale takes over (keep eNPS)"),
+    "Single 1-5 scale for every item": (
+        "FIX", "One 1–5 scale for every question",
+        "Mixing 1–5 and 1–10 distorted the client’s own summary scores"),
+    "Anonymised ITEM-LEVEL multi-wave storage": (
+        "FIX", "Store anonymised answers per person, per survey",
+        "Storing only department averages blocked most analysis; this is the single biggest fix"),
+}
+
+
 st.title("The 2026 Survey Plan")
 
 c1, c2 = st.columns(2)
@@ -68,11 +140,14 @@ capability = load_table("tab20_capability_comparison")
 require(capability)
 
 # ====================================================================== 1. capability
-st.subheader("What today's survey cannot answer? and why")
-cap = capability.copy()
-cap.columns = ["Client question", "What the 2024 survey can do",
-               "What the demonstration did", "Missing data → fix in 2026"][:len(cap.columns)]
+st.subheader("What today’s survey cannot answer, and why")
+cap = pd.DataFrame(
+    [CAP_PLAIN.get(str(r.iloc[0]), tuple(r.iloc[:4])) for _, r in capability.iterrows()],
+    columns=CAP_COLS,
+)
 st.dataframe(cap, hide_index=True, use_container_width=True)
+with st.expander("Technical detail"):
+    st.dataframe(capability, hide_index=True, use_container_width=True)
 st.markdown(
     f"""
 **Read the last column.** Each question the survey cannot answer fails for one reason: a
@@ -90,8 +165,8 @@ st.markdown(
     """
 **What this map does.** It places each driver on two axes and splits them into four boxes:
 
-- **Across —> performance:** the driver's score in the 2024 survey. Further right is better.
-- **Up —> importance:** its share of what explains engagement, from the demonstration.
+- **Across: performance.** The driver's score in the 2024 survey. Further right is better.
+- **Up: importance.** Its share of what explains engagement, from the demonstration.
 
 The box that matters is top left: **important, but scoring low**. The red panel on the left
 holds the drivers the 2024 survey never measured, so they have no score to place, only an
@@ -151,12 +226,16 @@ if ip is not None:
     st.markdown("**What the map shows:**\n\n" + "\n".join(lines))
 
 # ====================================================================== 3. instrument
-st.subheader("The instrument: keep, add, drop, fix")
+st.subheader("Keep, add, drop, fix")
 redesign = load_table("tab22_survey_redesign")
 if redesign is not None:
-    rv = redesign.copy()
-    rv.columns = ["Decision", "What it covers", "Why (traced back to the analysis)"][:len(rv.columns)]
+    rv = pd.DataFrame(
+        [RD_PLAIN.get(str(r.iloc[1]), tuple(r.iloc[:3])) for _, r in redesign.iterrows()],
+        columns=RD_COLS,
+    )
     st.dataframe(rv, hide_index=True, use_container_width=True)
+    with st.expander("Technical detail"):
+        st.dataframe(redesign, hide_index=True, use_container_width=True)
 
     counts = redesign["decision"].value_counts()
     adds, drops = int(counts.get("ADD", 0)), int(counts.get("DROP/MERGE", 0))
@@ -165,7 +244,7 @@ if redesign is not None:
         f"""
 **The justification column is the deliverable.** Every row points back to the analysis that
 produced it, so each recommendation can be checked and challenged on its own. That is what
-keeps the whole project logically connected, from the data problems in notebook 01 to this table.
+keeps the whole project logically connected, from the first data check to this table.
 
 **The shape of the advice: {adds} ADD against {drops} DROP.** ({keeps} KEEP, {fixes} FIX.) The
 2024 survey is **not wrong, it is incomplete**. It does not need replacing. It needs extending,

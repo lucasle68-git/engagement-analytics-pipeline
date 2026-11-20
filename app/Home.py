@@ -28,6 +28,50 @@ st.caption(
     "An interactive read of the analysis for non-technical readers · "
     "MGT5496P Business Analytics Consultancy"
 )
+
+# ---------------------------------------------------------------- about this project
+with st.container(border=True):
+    _about, _links = st.columns([3, 1])
+    with _about:
+        st.markdown(
+            """
+#### About this project
+
+**Lucas Le** · MSc Business Analytics, University of Glasgow
+
+Employee-engagement analysis for a fintech client · **Grade:** A2 (21/22)
+
+**Stack:** Python · pandas · scikit-learn · SHAP · Streamlit · pytest · GitHub Actions
+"""
+        )
+    with _links:
+        st.link_button(
+            "GitHub repository",
+            "https://github.com/lucasle68-git/engagement-analytics-pipeline",
+            use_container_width=True,
+        )
+        st.link_button(
+            "LinkedIn",
+            "https://www.linkedin.com/in/lucasle68/",
+            use_container_width=True,
+        )
+
+# ---------------------------------------------------------------- what I did (STAR)
+st.subheader("What I did")
+st.markdown(
+    """
+| | Situation | Task | Action | Result |
+|---|---|---|---|---|
+| **1. Scoping** | The data showed where engagement stood, but not why or who was at risk. | Keep the client’s goals without overpromising. | Proposed a calibrated synthetic dataset instead of dropping goals. Used a doctor’s logic: diagnose, test, prescribe. | All 4 goals kept, each with a clear evidence base. |
+| **2. Diagnosis** | One aggregated survey with 107 respondents. | Find where engagement is weak. | Cleaned and rescaled the data. Ranked themes, mapped department gaps and screened 34 questions. | Showed that the gaps are between departments, not themes. Flagged 2 misleading client scores. |
+| **3. Method validation** | Results on synthetic data can look good but prove nothing. | Prove the methods find the right answer. | Built data with a known answer (1,000 staff × 3 waves) and added automatic quality checks. Ran driver analysis, risk models and SHAP. | Recovered the planted top 3 drivers. Risk model: 0.79 ROC-AUC, caught 78% of at-risk staff. |
+| **4. Recommendation** | 5 client questions could not be answered with 2024 data. | Fix that for the 2026 survey. | Traced each gap to the data that was missing. | An 11-point survey redesign. |
+| **5. Delivery** | The work had to be reusable and shareable without client data. | Make it reproducible. | Wrote a Python package with a one-command pipeline, automated tests and this app. | Full rebuild in about 2 minutes, with zero client data in the repo. |
+"""
+)
+
+st.divider()
+
 survey_badge()
 
 # ---------------------------------------------------------------- key takeaways
