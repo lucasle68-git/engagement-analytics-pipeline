@@ -42,7 +42,7 @@
   /* Stats */
   .stats { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
   .stat { padding: 26px 22px 24px; box-shadow: inset 3px 0 0 var(--teal); background: linear-gradient(90deg, rgba(0,205,188,.12), rgba(0,205,188,0) 45%); }
-  .stat b { display: block; font-weight: 300; font-size: 46px; line-height: 1.05; letter-spacing: -.02em; color: var(--ink); margin-bottom: 8px; }
+  .stat b { display: block; font-weight: 300; font-size: clamp(30px, 3.8vw, 46px); white-space: nowrap; line-height: 1.05; letter-spacing: -.02em; color: var(--ink); margin-bottom: 8px; }
   .stat span { color: var(--muted); font-size: 14px; display: block; }
   .skills { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 22px 0 56px; list-style: none; }
   .skills li { font-size: 13px; color: var(--ink); border: 1px solid var(--line-strong); border-radius: 3px; padding: 4px 10px; background: var(--card); }
