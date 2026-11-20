@@ -2,7 +2,7 @@
 
 [![tests](https://github.com/lucasle68-git/engagement-analytics-pipeline/actions/workflows/tests.yml/badge.svg)](https://github.com/lucasle68-git/engagement-analytics-pipeline/actions/workflows/tests.yml)
 
-**[▶ Open the live app](https://engagement-analytics-pipeline-dpmibzsxdcprnzvbaobd4e.streamlit.app/)** · no installation, runs on the bundled demo data
+**[◆ Project overview](https://lucasle68-git.github.io/engagement-analytics-pipeline/)** · 30-second read &nbsp;&nbsp;|&nbsp;&nbsp; **[▶ Live app](https://engagement-analytics-pipeline-dpmibzsxdcprnzvbaobd4e.streamlit.app/)** · no installation, runs on the bundled demo data
 
 A two-phase analytics consultancy project for a fintech client: diagnose what an aggregated
 employee-engagement survey **can** support, demonstrate on synthetic data what better data
