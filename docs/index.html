@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Employee Engagement Analytics · Lucas Le</title>
+<meta name="description" content="People-analytics project in Python: diagnostic of an aggregated employee survey, driver analysis and risk models validated on calibrated synthetic data, a 2026 survey redesign and a Streamlit dashboard.">
+<meta property="og:title" content="Employee Engagement Analytics · Lucas Le">
+<meta property="og:description" content="From one aggregated survey to a validated people-analytics pipeline: Python, scikit-learn, SHAP and a Streamlit dashboard.">
+<meta property="og:image" content="https://lucasle68-git.github.io/engagement-analytics-pipeline/images/og_preview.png">
+<style>
+  :root {
+    --ink: #1F2937; --muted: #5B6472; --accent: #1F5FAD; --navy: #13396A;
+    --bg: #F3F5F8; --card: #FFFFFF; --line: #E2E6EC; --risk: #B4400B; --ok: #0F7A4A;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 16px/1.6 "Segoe UI", system-ui, -apple-system, Helvetica, Arial, sans-serif; }
+  a { color: var(--accent); }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+  header { background: var(--navy); color: #fff; padding: 56px 0 48px; }
+  header .eyebrow { text-transform: uppercase; letter-spacing: .08em; font-size: 13px; opacity: .75; margin: 0 0 8px; }
+  header h1 { font-size: clamp(26px, 4vw, 40px); line-height: 1.2; margin: 0 0 14px; max-width: 820px; }
+  header p.lead { font-size: 18px; max-width: 760px; margin: 0 0 10px; opacity: .9; }
+  header p.meta { font-size: 14px; margin: 0 0 24px; opacity: .75; }
+  .buttons { display: flex; flex-wrap: wrap; gap: 10px; }
+  .btn { display: inline-block; padding: 10px 16px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 15px; }
+  .btn.primary { background: #fff; color: var(--navy); }
+  .btn.ghost { border: 1px solid rgba(255,255,255,.5); color: #fff; }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: -28px auto 0; }
+  .stat { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+  .stat b { display: block; font-size: 26px; color: var(--accent); line-height: 1.2; }
+  .stat span { color: var(--muted); font-size: 14px; }
+  .skills { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0 0; padding: 0; list-style: none; }
+  .skills li { font-size: 13px; color: var(--navy); background: #E6EDF7; border-radius: 999px; padding: 3px 10px; }
+  section { padding: 44px 0 8px; }
+  h2 { font-size: 24px; margin: 0 0 6px; }
+  .sub { color: var(--muted); margin: 0 0 20px; }
+  .steps { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 10px; align-items: stretch; margin: 0; padding: 0; list-style: none; }
+  .steps li.step { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; }
+  .steps li.step b { display: block; color: var(--accent); font-size: 17px; }
+  .steps li.step span { font-size: 14px; color: var(--muted); }
+  .steps li.step.synthetic b { color: var(--risk); }
+  .steps .arrow { align-self: center; color: var(--muted); font-size: 20px; }
+  .shot img { width: 100%; height: auto; display: block; border-radius: 8px; border: 1px solid var(--line); background: #fff; }
+  .shot.tall img { max-width: 760px; margin: 0 auto; }
+  .shot a { display: block; }
+  .note { font-size: 14px; color: var(--muted); margin: 10px 0 0; }
+  .page { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+  .page .tag { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0; }
+  .page h3 { font-size: 20px; margin: 4px 0 8px; }
+  .page p { margin: 0 0 14px; color: var(--ink); }
+  .page.synthetic { border-left: 4px solid var(--risk); }
+  .page.synthetic .tag em { color: var(--risk); font-style: normal; font-weight: 600; }
+  .pipeline { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0; padding: 0; list-style: none; }
+  .pipeline li { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 8px 12px; font-size: 14px; }
+  .pipeline li b { color: var(--accent); }
+  .pipeline .arrow { border: 0; background: none; padding: 0; color: var(--muted); }
+  ul.points { padding-left: 20px; margin: 16px 0 0; }
+  ul.points li { margin-bottom: 6px; }
+  footer { margin-top: 48px; padding: 28px 0 40px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+  @media (max-width: 720px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    header { padding: 40px 0 44px; }
+    .pipeline .arrow { display: none; }
+    .steps { grid-template-columns: 1fr; }
+    .steps .arrow { display: none; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <p class="eyebrow">Portfolio project · Python · Machine learning · Streamlit</p>
+    <h1>From one aggregated survey to a validated people-analytics pipeline</h1>
+    <p class="lead">A fintech client wanted to know what drives employee engagement and who is at risk of disengaging, but its survey held only department averages. I diagnosed what the real data could show, validated the methods on calibrated synthetic data, and turned the gap into a 2026 survey redesign.</p>
+    <p class="meta">MSc Business Analytics consultancy project, University of Glasgow · Grade A2 (21/22)</p>
+    <div class="buttons">
+      <a class="btn primary" href="https://engagement-analytics-pipeline-dpmibzsxdcprnzvbaobd4e.streamlit.app/">Open the live dashboard</a>
+      <a class="btn ghost" href="https://github.com/lucasle68-git/engagement-analytics-pipeline">View the code on GitHub</a>
+      <a class="btn ghost" href="https://github.com/lucasle68-git/engagement-analytics-pipeline/blob/main/notebooks/05_phase2_modelling.ipynb">Modelling notebook</a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="stats">
+    <div class="stat"><b>3 of 3</b><span>drivers built into the test data, recovered by the analysis</span></div>
+    <div class="stat"><b>0.79</b><span>ROC-AUC on a survey wave the risk model never saw</span></div>
+    <div class="stat"><b>11</b><span>changes to the 2026 survey, each traced to the analysis</span></div>
+    <div class="stat"><b>~2 min</b><span>for one command to rebuild every figure and table</span></div>
+  </div>
+  <ul class="skills" aria-label="Skills shown in this project">
+    <li>Survey &amp; HR data</li><li>Regression &amp; driver analysis</li><li>Classification</li>
+    <li>Clustering &amp; PCA</li><li>Explainable ML (SHAP)</li><li>Synthetic data</li>
+    <li>Data quality</li><li>Dashboards</li><li>Stakeholder reporting</li>
+  </ul>
+
+  <section>
+    <h2>How I approached it</h2>
+    <p class="sub">The data could not answer most of the client's questions. Rather than drop them, I split the work the way a clinician would.</p>
+    <ol class="steps">
+      <li class="step"><b>1 · Diagnose</b><span>Real 2024 survey: where engagement stands, with its limits stated.</span></li>
+      <li class="arrow" aria-hidden="true">→</li>
+      <li class="step synthetic"><b>2 · Validate</b><span>Synthetic data with a known answer, to prove the methods find it.</span></li>
+      <li class="arrow" aria-hidden="true">→</li>
+      <li class="step"><b>3 · Prescribe</b><span>What the 2026 survey must collect so the methods can run on real data.</span></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>The dashboard</h2>
+    <p class="sub">A Streamlit app that explains the results to non-technical readers. Every page opens with its key takeaways.</p>
+    <div class="shot"><a href="https://engagement-analytics-pipeline-dpmibzsxdcprnzvbaobd4e.streamlit.app/"><img src="images/00_home.webp" width="1600" height="1261" alt="Dashboard home page: about the project and a Situation, Task, Action, Result summary of the work"></a></div>
+    <p class="note">Hosted free on Streamlit Community Cloud. If nobody has opened it recently, it takes a moment to wake up.</p>
+  </section>
+
+  <section>
+    <h2>Four questions, four pages</h2>
+    <p class="sub">Each page leads with its conclusion, and every chart is labelled with its data source.</p>
+
+    <article class="page">
+      <p class="tag">1 of 4 · Where does engagement stand?</p>
+      <h3>The gaps are between departments, not themes</h3>
+      <p>Rebuilt absolute scores from a workbook that stored each department as a difference from the company mean, and put 1–5 and 1–10 questions on one scale. A department tends to be strong or weak across the board, and two of the client's own theme scores turned out to be misleading.</p>
+      <div class="shot tall"><img src="images/01_current_state.webp" width="1600" height="1826" alt="Heatmap of every department against the company average on each of the eight themes" loading="lazy"></div>
+    </article>
+
+    <article class="page">
+      <p class="tag">2 of 4 · Where should the client act?</p>
+      <h3>Priority questions split into company-wide and localised problems, each needing a different fix</h3>
+      <p>All 34 questions placed by their score and by how much departments disagree on them. Clustering found no distinct groups of departments, and the page says so instead of forcing segments.</p>
+      <div class="shot"><img src="images/02_hotspots.webp" width="1600" height="1481" alt="Scatter plot of the 34 survey questions by company score and spread across departments, split into four boxes" loading="lazy"></div>
+    </article>
+
+    <article class="page synthetic">
+      <p class="tag">3 of 4 · What drives engagement, and who is at risk? · <em>Synthetic data, proof of method</em></p>
+      <h3>Tested on data with a known answer, the pipeline found it</h3>
+      <p>1,000 employees × 3 survey waves, calibrated to the real survey, with two quality checks that stop the run if the data drifts. Regression-based driver analysis recovered all 3 drivers built into the data. The best of three risk classifiers reached 0.79 ROC-AUC and caught 78% of at-risk employees on a wave it never saw, with SHAP showing what drives each score.</p>
+      <div class="shot"><img src="images/03_drivers.webp" width="1600" height="1257" alt="Bar chart ranking eight engagement drivers by their share of explained variance" loading="lazy"></div>
+    </article>
+
+    <article class="page">
+      <p class="tag">4 of 4 · What should the 2026 survey collect?</p>
+      <h3>Extend the survey, don't replace it</h3>
+      <p>Five client questions failed for one reason: the data was never collected. The redesign has 11 changes (6 add, 2 keep, 2 fix, 1 drop), each traced back to the analysis behind it. In the demonstration, almost half of what drives engagement is not asked in today's survey.</p>
+      <div class="shot"><img src="images/04_survey_plan.webp" width="1600" height="1399" alt="Importance against performance map, with the drivers the 2024 survey never measured shown in a separate panel" loading="lazy"></div>
+    </article>
+  </section>
+
+  <section>
+    <h2>How it was built</h2>
+    <p class="sub">Six notebooks run in order by one command; the logic lives in a tested Python package.</p>
+    <ul class="pipeline">
+      <li><b>Excel workbook</b> from the client</li><li class="arrow">→</li>
+      <li><b>Schema checks</b> + scale harmonisation</li><li class="arrow">→</li>
+      <li><b>Diagnostic</b>: ranking, gaps, clustering, PCA</li><li class="arrow">→</li>
+      <li><b>Synthetic panel</b> + 2 quality gates</li><li class="arrow">→</li>
+      <li><b>Models</b>: drivers, risk, SHAP</li><li class="arrow">→</li>
+      <li><b>2026 survey</b> redesign</li><li class="arrow">→</li>
+      <li><b>Streamlit</b> dashboard</li>
+    </ul>
+    <ul class="points">
+      <li><b>Scope before code:</b> four client objectives refined into four answerable ones, each with a stated evidence base (real, synthetic or both).</li>
+      <li><b>Quality gates that stop the run:</b> if the synthetic data drifts from the real survey or loses its research-based relationships, the pipeline fails rather than warns.</li>
+      <li><b>Every chart is labelled REAL, SYNTHETIC or DEMO,</b> enforced in code, so a public copy can never pass demo numbers off as client data.</li>
+      <li><b>Reproducible:</b> one command rebuilds every figure and table in about 2 minutes; pytest and GitHub Actions run on every push.</li>
+    </ul>
+  </section>
+
+  <footer>
+    Lucas Le · <a href="https://www.linkedin.com/in/lucasle68/">LinkedIn</a> · <a href="https://github.com/lucasle68-git">GitHub</a><br>
+    Data: the client's survey is confidential. This page and the public repository use a demo workbook with the same structure and stand-in values; pages 3–4 add a synthetic dataset. Built with Python (pandas, statsmodels, scikit-learn, SHAP), Streamlit, pytest and GitHub Actions.
+  </footer>
+</div>
+</body>
+</html>
